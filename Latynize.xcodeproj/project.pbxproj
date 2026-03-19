@@ -29,9 +29,30 @@
 		A2B7C4D92F6BBBCB009B7043 /* LatynizeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LatynizeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		A2BE27C22F6C685C0083318D /* Exceptions for "Latynize" folder in "Latynize" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Tests/ConversionEngineTests.swift,
+			);
+			target = A2B7C4BF2F6BBBC9009B7043 /* Latynize */;
+		};
+		A2BE27C32F6C685C0083318D /* Exceptions for "Latynize" folder in "LatynizeTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Tests/ConversionEngineTests.swift,
+			);
+			target = A2B7C4CE2F6BBBCB009B7043 /* LatynizeTests */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		A2B7C4C22F6BBBC9009B7043 /* Latynize */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				A2BE27C22F6C685C0083318D /* Exceptions for "Latynize" folder in "Latynize" target */,
+				A2BE27C32F6C685C0083318D /* Exceptions for "Latynize" folder in "LatynizeTests" target */,
+			);
 			path = Latynize;
 			sourceTree = "<group>";
 		};
