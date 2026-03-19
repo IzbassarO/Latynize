@@ -16,122 +16,121 @@ struct OnboardingView: View {
     private let pages: [OnboardingPage] = [
         OnboardingPage(
             icon: "character.textbox",
-            iconColor: .blue,
             title: "Latynize",
             subtitle: "Kazakh Script Converter",
-            description: "Қазақ жазуын кириллицадан латынға және керісінше түрлендіріңіз.\n\nConvert Kazakh text between Cyrillic and Latin scripts instantly."
+            body: "Convert Kazakh text between Cyrillic and Latin scripts — instantly, on your device."
         ),
         OnboardingPage(
             icon: "camera.viewfinder",
-            iconColor: .orange,
             title: "Scan & Convert",
-            subtitle: "Camera OCR",
-            description: "Point your camera at any Kazakh text — signs, books, documents — and get instant Latin conversion.\n\nPowered by on-device AI. No internet needed."
+            subtitle: "Powered by on-device AI",
+            body: "Point your camera at signs, books, or documents. Tap any text to get the Latin version."
         ),
         OnboardingPage(
-            icon: "clock.arrow.circlepath",
-            iconColor: .green,
-            title: "Your History",
-            subtitle: "Never lose a conversion",
-            description: "Every conversion is saved automatically. Search, copy, and share anytime.\n\nAll data stays on your device. Private by design."
+            icon: "lock.shield",
+            title: "100% Private",
+            subtitle: "No servers. No tracking.",
+            body: "Everything stays on your device. No internet needed. No data collection. Ever."
         ),
     ]
     
     var body: some View {
         VStack(spacing: 0) {
-            // Page content
             TabView(selection: $currentPage) {
                 ForEach(Array(pages.enumerated()), id: \.offset) { index, page in
-                    pageView(page)
+                    pageContent(page)
                         .tag(index)
                 }
             }
             .tabViewStyle(.page(indexDisplayMode: .never))
-            .animation(.easeInOut(duration: 0.3), value: currentPage)
+            .animation(.easeInOut(duration: 0.35), value: currentPage)
             
-            // Bottom section
-            VStack(spacing: 20) {
-                // Page indicators
-                HStack(spacing: 8) {
-                    ForEach(0..<pages.count, id: \.self) { index in
-                        Capsule()
-                            .fill(index == currentPage ? Color.primary : Color.primary.opacity(0.2))
-                            .frame(width: index == currentPage ? 24 : 8, height: 8)
-                            .animation(.easeInOut(duration: 0.25), value: currentPage)
-                    }
-                }
-                
-                // Action button
-                Button {
-                    if currentPage < pages.count - 1 {
-                        currentPage += 1
-                    } else {
-                        completeOnboarding()
-                    }
-                } label: {
-                    Text(currentPage < pages.count - 1 ? "Continue" : "Get Started")
-                        .font(.headline)
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 54)
-                        .background(Color.primary)
-                        .foregroundStyle(Color(uiColor: .systemBackground))
-                        .clipShape(RoundedRectangle(cornerRadius: 14))
-                }
-                
-                // Skip (only on non-last pages)
-                if currentPage < pages.count - 1 {
-                    Button("Skip") {
-                        completeOnboarding()
-                    }
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-                } else {
-                    // Invisible spacer to keep layout stable
-                    Text(" ")
-                        .font(.subheadline)
-                }
-            }
-            .padding(.horizontal, 24)
-            .padding(.bottom, 40)
+            bottomSection
         }
+        .background(Color(uiColor: .systemBackground))
     }
     
-    // MARK: - Page View
+    // MARK: - Page Content
     
-    private func pageView(_ page: OnboardingPage) -> some View {
-        VStack(spacing: 24) {
+    private func pageContent(_ page: OnboardingPage) -> some View {
+        VStack(spacing: 28) {
             Spacer()
             
             // Icon
-            Image(systemName: page.icon)
-                .font(.system(size: 64, weight: .light))
-                .foregroundStyle(page.iconColor)
-                .frame(height: 80)
-            
-            // Title
-            VStack(spacing: 6) {
-                Text(page.title)
-                    .font(.system(size: 28, weight: .bold, design: .default))
+            ZStack {
+                Circle()
+                    .fill(Color.accentTeal.opacity(0.1))
+                    .frame(width: 120, height: 120)
                 
-                Text(page.subtitle)
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
+                Image(systemName: page.icon)
+                    .font(.system(size: 48, weight: .light))
+                    .foregroundStyle(Color.accentTeal)
             }
             
-            // Description
-            Text(page.description)
-                .font(.body)
+            // Text
+            VStack(spacing: 8) {
+                Text(page.title)
+                    .font(.system(size: 30, weight: .bold))
+                
+                Text(page.subtitle)
+                    .font(.system(size: 15, weight: .medium))
+                    .foregroundStyle(Color.accentTeal)
+            }
+            
+            Text(page.body)
+                .font(.system(size: 16))
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
                 .lineSpacing(4)
-                .padding(.horizontal, 32)
+                .padding(.horizontal, 40)
             
             Spacer()
             Spacer()
         }
     }
     
-    // MARK: - Actions
+    // MARK: - Bottom Section
+    
+    private var bottomSection: some View {
+        VStack(spacing: 18) {
+            // Indicators
+            HStack(spacing: 8) {
+                ForEach(0..<pages.count, id: \.self) { i in
+                    Capsule()
+                        .fill(i == currentPage ? Color.accentTeal : Color.accentTeal.opacity(0.2))
+                        .frame(width: i == currentPage ? 28 : 8, height: 8)
+                        .animation(.spring(duration: 0.3), value: currentPage)
+                }
+            }
+            
+            // Button
+            Button {
+                if currentPage < pages.count - 1 {
+                    currentPage += 1
+                } else {
+                    completeOnboarding()
+                }
+            } label: {
+                Text(currentPage < pages.count - 1 ? "Continue" : "Get Started")
+                    .font(.system(size: 17, weight: .semibold))
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 54)
+                    .foregroundStyle(.white)
+                    .background(Color.accentTeal, in: RoundedRectangle(cornerRadius: 14))
+            }
+            .padding(.horizontal, 24)
+            
+            // Skip
+            if currentPage < pages.count - 1 {
+                Button("Skip") { completeOnboarding() }
+                    .font(.system(size: 15))
+                    .foregroundStyle(.secondary)
+            } else {
+                Text(" ").font(.system(size: 15))
+            }
+        }
+        .padding(.bottom, 36)
+    }
     
     private func completeOnboarding() {
         HapticService.medium()
@@ -141,14 +140,11 @@ struct OnboardingView: View {
     }
 }
 
-// MARK: - Page Model
-
 private struct OnboardingPage {
     let icon: String
-    let iconColor: Color
     let title: String
     let subtitle: String
-    let description: String
+    let body: String
 }
 
 #Preview {

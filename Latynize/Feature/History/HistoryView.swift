@@ -21,10 +21,9 @@ struct HistoryView: View {
     
     private var filteredRecords: [ConversionRecord] {
         guard !searchText.isEmpty else { return records }
-        let query = searchText.lowercased()
+        let q = searchText.lowercased()
         return records.filter {
-            $0.inputText.lowercased().contains(query) ||
-            $0.outputText.lowercased().contains(query)
+            $0.inputText.lowercased().contains(q) || $0.outputText.lowercased().contains(q)
         }
     }
     
@@ -34,55 +33,48 @@ struct HistoryView: View {
                 if records.isEmpty {
                     emptyState
                 } else {
-                    recordList
+                    list
                 }
             }
             .navigationTitle("History")
-            .navigationBarTitleDisplayMode(.inline)
+            .navigationBarTitleDisplayMode(.large)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        showSettings = true
-                    } label: {
+                    Button { showSettings = true } label: {
                         Image(systemName: "gearshape")
+                            .symbolRenderingMode(.hierarchical)
                     }
                 }
-                
                 if !records.isEmpty {
                     ToolbarItem(placement: .topBarLeading) {
-                        Button("Clear All", role: .destructive) {
-                            showDeleteAlert = true
-                        }
-                        .font(.caption)
+                        Button("Clear", role: .destructive) { showDeleteAlert = true }
+                            .font(.system(size: 15))
                     }
                 }
             }
-            .sheet(isPresented: $showSettings) {
-                SettingsView()
-            }
-            .alert("Delete all history?", isPresented: $showDeleteAlert) {
+            .sheet(isPresented: $showSettings) { SettingsView() }
+            .alert("Clear all history?", isPresented: $showDeleteAlert) {
                 Button("Cancel", role: .cancel) {}
-                Button("Delete All", role: .destructive) {
-                    deleteAll()
-                }
+                Button("Delete All", role: .destructive) { deleteAll() }
             } message: {
                 Text("This action cannot be undone.")
             }
         }
     }
     
-    // MARK: - Record List
+    // MARK: - List
     
-    private var recordList: some View {
+    private var list: some View {
         List {
             ForEach(filteredRecords) { record in
                 NavigationLink {
-                    ConversionDetailView(record: record)
+                    DetailView(record: record)
                 } label: {
-                    ConversionCard(record: record)
+                    RecordRow(record: record)
                 }
+                .listRowInsets(EdgeInsets(top: 10, leading: 16, bottom: 10, trailing: 16))
             }
-            .onDelete(perform: deleteRecords)
+            .onDelete(perform: delete)
         }
         .listStyle(.plain)
         .searchable(text: $searchText, prompt: "Search conversions...")
@@ -91,115 +83,94 @@ struct HistoryView: View {
     // MARK: - Empty State
     
     private var emptyState: some View {
-        VStack(spacing: 16) {
+        VStack(spacing: 20) {
             Spacer()
             
-            Image(systemName: "clock.badge.questionmark")
-                .font(.system(size: 48))
-                .foregroundStyle(.secondary)
+            ZStack {
+                Circle()
+                    .fill(Color.accentTeal.opacity(0.08))
+                    .frame(width: 100, height: 100)
+                Image(systemName: "clock")
+                    .font(.system(size: 36, weight: .light))
+                    .foregroundStyle(Color.accentTeal.opacity(0.6))
+            }
             
-            Text("No conversions yet")
-                .font(.headline)
-            
-            Text("Your conversion history will appear here.\nStart by converting text in the Convert tab.")
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
-                .multilineTextAlignment(.center)
+            VStack(spacing: 6) {
+                Text("No conversions yet")
+                    .font(.system(size: 18, weight: .semibold))
+                Text("Convert some text and it will\nautomatically appear here.")
+                    .font(.system(size: 15))
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+            }
             
             Spacer()
         }
-        .padding()
     }
     
     // MARK: - Actions
     
-    private func deleteRecords(at offsets: IndexSet) {
-        for index in offsets {
-            modelContext.delete(filteredRecords[index])
-        }
+    private func delete(at offsets: IndexSet) {
+        for i in offsets { modelContext.delete(filteredRecords[i]) }
         HapticService.light()
     }
     
     private func deleteAll() {
-        for record in records {
-            modelContext.delete(record)
-        }
+        for r in records { modelContext.delete(r) }
         HapticService.medium()
     }
 }
 
-// MARK: - Conversion Card
+// MARK: - Record Row
 
-struct ConversionCard: View {
-    
+struct RecordRow: View {
     let record: ConversionRecord
     
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
-            // Source text
             Text(record.inputPreview)
-                .font(.subheadline)
-                .foregroundStyle(.primary)
+                .font(.system(size: 15, weight: .medium))
                 .lineLimit(1)
             
-            // Arrow + converted text
-            HStack(spacing: 4) {
+            HStack(spacing: 5) {
                 Image(systemName: "arrow.right")
-                    .font(.caption2)
-                    .foregroundStyle(.tertiary)
+                    .font(.system(size: 10))
+                    .foregroundStyle(Color.accentTeal)
                 Text(record.outputPreview)
-                    .font(.subheadline)
+                    .font(.system(size: 14))
                     .foregroundStyle(.secondary)
                     .lineLimit(1)
             }
             
-            // Metadata
-            HStack(spacing: 8) {
-                Label(record.source.rawValue.capitalized, systemImage: record.source.icon)
-                
+            HStack(spacing: 6) {
+                Image(systemName: record.source.icon)
+                Text(record.source.rawValue.capitalized)
                 Text("·")
-                
                 Text(record.createdAt.relativeDisplay)
-                
                 Text("·")
-                
                 Text(record.alphabetVersion)
             }
-            .font(.caption2)
+            .font(.system(size: 11))
             .foregroundStyle(.tertiary)
         }
-        .padding(.vertical, 4)
     }
 }
 
 // MARK: - Detail View
 
-struct ConversionDetailView: View {
-    
+struct DetailView: View {
     let record: ConversionRecord
     
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 20) {
-                // Original
-                section(title: "Original", text: record.inputText, icon: "text.alignleft")
-                
-                // Converted
-                section(title: "Converted", text: record.outputText, icon: "character.textbox")
-                
-                // Metadata
-                VStack(alignment: .leading, spacing: 8) {
-                    Label("Info", systemImage: "info.circle")
-                        .font(.subheadline.weight(.medium))
-                    
-                    metadataRow("Direction", value: record.direction.label)
-                    metadataRow("Source", value: record.source.rawValue.capitalized)
-                    metadataRow("Alphabet", value: record.alphabetVersion)
-                    metadataRow("Date", value: record.createdAt.formatted(date: .long, time: .shortened))
-                }
+            VStack(spacing: 20) {
+                textBlock(label: "Original", text: record.inputText, icon: "text.alignleft")
+                textBlock(label: "Converted", text: record.outputText, icon: "text.badge.checkmark")
+                infoSection
             }
-            .padding()
+            .padding(16)
         }
+        .background(Color(uiColor: .systemGroupedBackground))
         .navigationTitle("Details")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -211,38 +182,67 @@ struct ConversionDetailView: View {
         }
     }
     
-    private func section(title: String, text: String, icon: String) -> some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Label(title, systemImage: icon)
-                .font(.subheadline.weight(.medium))
-                .foregroundStyle(.secondary)
+    private func textBlock(label: String, text: String, icon: String) -> some View {
+        VStack(alignment: .leading, spacing: 10) {
+            HStack(spacing: 6) {
+                Image(systemName: icon)
+                    .font(.system(size: 12))
+                    .foregroundStyle(Color.accentTeal)
+                Text(label)
+                    .font(.system(size: 13, weight: .medium))
+                    .foregroundStyle(.secondary)
+            }
             
             Text(text)
-                .font(.body)
+                .font(.system(size: 16))
                 .textSelection(.enabled)
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(12)
-                .background(.fill.quaternary, in: RoundedRectangle(cornerRadius: 10))
+                .padding(14)
+                .background(
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(Color(uiColor: .secondarySystemGroupedBackground))
+                )
             
             Button {
                 UIPasteboard.general.string = text
                 HapticService.success()
             } label: {
-                Label("Copy", systemImage: "doc.on.doc")
-                    .font(.caption)
+                HStack(spacing: 5) {
+                    Image(systemName: "doc.on.doc").font(.system(size: 11))
+                    Text("Copy").font(.system(size: 13, weight: .medium))
+                }
+                .foregroundStyle(Color.accentTeal)
             }
-            .tint(.secondary)
         }
     }
     
-    private func metadataRow(_ label: String, value: String) -> some View {
+    private var infoSection: some View {
+        VStack(spacing: 0) {
+            infoRow("Direction", record.direction.label)
+            Divider().padding(.leading, 16)
+            infoRow("Source", record.source.rawValue.capitalized)
+            Divider().padding(.leading, 16)
+            infoRow("Standard", record.alphabetVersion == "2021" ? "Standard 2021" : "Legacy 2018")
+            Divider().padding(.leading, 16)
+            infoRow("Date", record.createdAt.formatted(date: .long, time: .shortened))
+        }
+        .background(
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Color(uiColor: .secondarySystemGroupedBackground))
+        )
+    }
+    
+    private func infoRow(_ label: String, _ value: String) -> some View {
         HStack {
             Text(label)
-                .foregroundStyle(.secondary)
+                .font(.system(size: 15))
             Spacer()
             Text(value)
+                .font(.system(size: 15))
+                .foregroundStyle(.secondary)
         }
-        .font(.subheadline)
+        .padding(.horizontal, 16)
+        .padding(.vertical, 12)
     }
 }
 

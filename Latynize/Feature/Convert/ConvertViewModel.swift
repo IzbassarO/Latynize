@@ -8,7 +8,6 @@
 import Foundation
 import SwiftUI
 import SwiftData
-import Combine
 
 @Observable
 final class ConvertViewModel {
@@ -21,8 +20,34 @@ final class ConvertViewModel {
     var selectedMappingID: String = AppSettings.shared.alphabetVersion
     
     var showCopiedToast = false
+    var showClipboardSuggestion = false
+    var clipboardText: String = ""
+    var showAlphabetReference = false
+    
     var characterCount: Int { inputText.count }
+    var wordCount: Int {
+        inputText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            ? 0
+            : inputText.split(separator: " ").count
+    }
     var hasInput: Bool { !inputText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
+    
+    // MARK: - Stats for output
+    
+    var convertedWordCount: Int {
+        guard hasInput else { return 0 }
+        return outputText.split(separator: " ").count
+    }
+    
+    // MARK: - Example phrases
+    
+    let examplePhrases: [(cyrillic: String, latin: String)] = [
+        ("Сәлем!", "Sälem!"),
+        ("Қазақстан Республикасы", "Qazaqstan Respublikası"),
+        ("Менің атым...", "Meniñ atım..."),
+        ("Астана — Қазақстанның астанасы", "Astana — Qazaqstannnıñ astanası"),
+        ("Қайырлы таң!", "Qaiırlı tañ!"),
+    ]
     
     // MARK: - Private
     
@@ -30,10 +55,52 @@ final class ConvertViewModel {
     private var debounceTask: Task<Void, Never>?
     private var autoSaveTask: Task<Void, Never>?
     
-    // MARK: - Actions
+    // MARK: - Smart Clipboard
+    
+    func checkClipboard() {
+        guard let text = UIPasteboard.general.string,
+              !text.isEmpty,
+              text.count >= 3,
+              text.count <= 500,
+              text != inputText else {
+            showClipboardSuggestion = false
+            return
+        }
+        
+        // Check if clipboard has Kazakh Cyrillic or Latin text
+        let detected = ScriptDetector.detect(text)
+        if detected == .cyrillic || detected == .latin {
+            clipboardText = text
+            showClipboardSuggestion = true
+        }
+    }
+    
+    func applyClipboardSuggestion() {
+        inputText = clipboardText
+        if let detected = ScriptDetector.suggestedDirection(for: clipboardText) {
+            direction = detected
+        }
+        performConversion()
+        showClipboardSuggestion = false
+        HapticService.light()
+    }
+    
+    func dismissClipboardSuggestion() {
+        showClipboardSuggestion = false
+    }
+    
+    // MARK: - Example Phrase
+    
+    func applyExample(_ phrase: String) {
+        inputText = phrase
+        direction = .cyrillicToLatin
+        performConversion()
+        HapticService.light()
+    }
+    
+    // MARK: - Core Actions
     
     func onInputChanged() {
-        // Debounce conversion: 80ms
         debounceTask?.cancel()
         debounceTask = Task { @MainActor in
             try? await Task.sleep(for: .milliseconds(80))
@@ -45,14 +112,11 @@ final class ConvertViewModel {
     func toggleDirection() {
         direction = direction.toggled
         HapticService.selection()
-        
-        // Swap: move output to input and re-convert
         if hasInput {
             let previousOutput = outputText
             inputText = previousOutput
             performConversion()
         }
-        
         AppSettings.shared.lastUsedDirection = direction
     }
     
@@ -65,15 +129,13 @@ final class ConvertViewModel {
     func pasteFromClipboard() {
         guard let text = UIPasteboard.general.string, !text.isEmpty else { return }
         inputText = text
-        
-        // Auto-detect direction if enabled
         if AppSettings.shared.autoDetectDirection {
             if let detected = ScriptDetector.suggestedDirection(for: text) {
                 direction = detected
             }
         }
-        
         performConversion()
+        showClipboardSuggestion = false
         HapticService.light()
     }
     
@@ -82,18 +144,14 @@ final class ConvertViewModel {
         UIPasteboard.general.string = outputText
         showCopiedToast = true
         HapticService.success()
-        
-        // Auto-hide toast
         Task { @MainActor in
             try? await Task.sleep(for: .seconds(1.5))
             showCopiedToast = false
         }
     }
     
-    /// Called when auto-saving to history after idle period.
     func saveToHistory(context: ModelContext) {
         guard hasInput, inputText.count >= 3 else { return }
-        
         let record = ConversionRecord(
             inputText: inputText,
             outputText: outputText,
@@ -106,7 +164,6 @@ final class ConvertViewModel {
     
     func scheduleAutoSave(context: ModelContext) {
         guard AppSettings.shared.autoSaveHistory else { return }
-        
         autoSaveTask?.cancel()
         autoSaveTask = Task { @MainActor in
             try? await Task.sleep(for: .seconds(2))
@@ -115,14 +172,11 @@ final class ConvertViewModel {
         }
     }
     
-    // MARK: - Private
-    
     private func performConversion() {
         guard hasInput else {
             outputText = ""
             return
         }
-        
         let result = engine.convert(inputText, direction: direction, mappingID: selectedMappingID)
         outputText = result.output
     }

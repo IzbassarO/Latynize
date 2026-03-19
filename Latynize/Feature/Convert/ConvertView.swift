@@ -19,20 +19,30 @@ struct ConvertView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                // Background
                 Color(uiColor: .systemGroupedBackground)
                     .ignoresSafeArea()
                 
                 ScrollView {
                     VStack(spacing: 16) {
-                        directionCard
+                        // Smart clipboard suggestion
+                        if viewModel.showClipboardSuggestion {
+                            clipboardBanner
+                        }
+                        
+                        directionSwitcher
                         inputCard
                         outputCard
-                        mappingInfo
+                        
+                        // Example phrases (shown when no input)
+                        if !viewModel.hasInput {
+                            examplesSection
+                        }
+                        
+                        standardSelector
                     }
-                    .padding(.horizontal)
-                    .padding(.top, 8)
-                    .padding(.bottom, 100) // space for keyboard
+                    .padding(.horizontal, 16)
+                    .padding(.top, 4)
+                    .padding(.bottom, 120)
                 }
                 .scrollDismissesKeyboard(.interactively)
             }
@@ -40,109 +50,149 @@ struct ConvertView: View {
             .navigationBarTitleDisplayMode(.large)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        showSettings = true
-                    } label: {
-                        Image(systemName: "gearshape")
-                            .symbolRenderingMode(.hierarchical)
+                    HStack(spacing: 16) {
+                        Button { viewModel.showAlphabetReference = true } label: {
+                            Image(systemName: "character.book.closed")
+                                .symbolRenderingMode(.hierarchical)
+                        }
+                        Button { showSettings = true } label: {
+                            Image(systemName: "gearshape")
+                                .symbolRenderingMode(.hierarchical)
+                        }
                     }
                 }
             }
-            .sheet(isPresented: $showSettings) {
-                SettingsView()
-            }
+            .sheet(isPresented: $showSettings) { SettingsView() }
+            .sheet(isPresented: $viewModel.showAlphabetReference) { AlphabetReferenceView() }
             .overlay(alignment: .top) {
                 if viewModel.showCopiedToast {
-                    toastBanner
-                        .transition(.move(edge: .top).combined(with: .opacity))
+                    toastView.transition(.move(edge: .top).combined(with: .opacity))
                 }
             }
-            .animation(.spring(duration: 0.3), value: viewModel.showCopiedToast)
+            .animation(.spring(duration: 0.35), value: viewModel.showCopiedToast)
+            .animation(.easeInOut(duration: 0.25), value: viewModel.showClipboardSuggestion)
         }
     }
     
-    // MARK: - Direction Card
+    // MARK: - Clipboard Banner
     
-    private var directionCard: some View {
-        HStack(spacing: 0) {
-            // Source label
-            VStack(spacing: 2) {
-                Text(directionSourceLabel)
-                    .font(.subheadline.weight(.medium))
-                Text(directionSourceScript)
-                    .font(.caption2)
+    private var clipboardBanner: some View {
+        HStack(spacing: 12) {
+            Image(systemName: "doc.on.clipboard.fill")
+                .font(.system(size: 16))
+                .foregroundStyle(Color.accentTeal)
+            
+            VStack(alignment: .leading, spacing: 2) {
+                Text("Text detected in clipboard")
+                    .font(.system(size: 13, weight: .semibold))
+                Text(viewModel.clipboardText.prefix(40) + (viewModel.clipboardText.count > 40 ? "..." : ""))
+                    .font(.system(size: 12))
+                    .foregroundStyle(.secondary)
+                    .lineLimit(1)
+            }
+            
+            Spacer()
+            
+            Button {
+                viewModel.applyClipboardSuggestion()
+            } label: {
+                Text("Convert")
+                    .font(.system(size: 13, weight: .semibold))
+                    .foregroundStyle(.white)
+                    .padding(.horizontal, 14)
+                    .padding(.vertical, 7)
+                    .background(Color.accentTeal, in: Capsule())
+            }
+            
+            Button {
+                viewModel.dismissClipboardSuggestion()
+            } label: {
+                Image(systemName: "xmark")
+                    .font(.system(size: 12, weight: .bold))
                     .foregroundStyle(.tertiary)
+            }
+        }
+        .padding(14)
+        .background(
+            RoundedRectangle(cornerRadius: 14)
+                .fill(Color.accentTeal.opacity(0.08))
+                .stroke(Color.accentTeal.opacity(0.2), lineWidth: 1)
+        )
+    }
+    
+    // MARK: - Direction Switcher
+    
+    private var directionSwitcher: some View {
+        HStack(spacing: 0) {
+            VStack(spacing: 3) {
+                Text(viewModel.direction == .cyrillicToLatin ? "Кириллица" : "Латын")
+                    .font(.system(size: 16, weight: .semibold))
+                Text(viewModel.direction == .cyrillicToLatin ? "Cyrillic" : "Latin")
+                    .font(.system(size: 11))
+                    .foregroundStyle(.secondary)
             }
             .frame(maxWidth: .infinity)
             
-            // Swap button
             Button {
-                withAnimation(.spring(duration: 0.3)) {
+                withAnimation(.spring(duration: 0.4, bounce: 0.2)) {
                     viewModel.toggleDirection()
                 }
             } label: {
-                Image(systemName: "arrow.left.arrow.right.circle.fill")
-                    .font(.system(size: 36))
-                    .symbolRenderingMode(.hierarchical)
-                    .foregroundStyle(.primary)
-                    .rotationEffect(.degrees(viewModel.direction == .cyrillicToLatin ? 0 : 180))
+                ZStack {
+                    Circle()
+                        .fill(Color.accentTeal)
+                        .frame(width: 44, height: 44)
+                    Image(systemName: "arrow.left.arrow.right")
+                        .font(.system(size: 15, weight: .bold))
+                        .foregroundStyle(.white)
+                        .rotationEffect(.degrees(viewModel.direction == .cyrillicToLatin ? 0 : 180))
+                }
             }
-            .accessibilityLabel("Swap direction")
             
-            // Target label
-            VStack(spacing: 2) {
-                Text(directionTargetLabel)
-                    .font(.subheadline.weight(.medium))
-                Text(directionTargetScript)
-                    .font(.caption2)
-                    .foregroundStyle(.tertiary)
+            VStack(spacing: 3) {
+                Text(viewModel.direction == .cyrillicToLatin ? "Латын" : "Кириллица")
+                    .font(.system(size: 16, weight: .semibold))
+                Text(viewModel.direction == .cyrillicToLatin ? "Latin" : "Cyrillic")
+                    .font(.system(size: 11))
+                    .foregroundStyle(.secondary)
             }
             .frame(maxWidth: .infinity)
         }
-        .padding(.vertical, 12)
-        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 14))
-    }
-    
-    private var directionSourceLabel: String {
-        viewModel.direction == .cyrillicToLatin ? "Кириллица" : "Латын"
-    }
-    
-    private var directionTargetLabel: String {
-        viewModel.direction == .cyrillicToLatin ? "Латын" : "Кириллица"
-    }
-    
-    private var directionSourceScript: String {
-        viewModel.direction == .cyrillicToLatin ? "Cyrillic" : "Latin"
-    }
-    
-    private var directionTargetScript: String {
-        viewModel.direction == .cyrillicToLatin ? "Latin" : "Cyrillic"
+        .padding(.vertical, 16)
+        .background(
+            RoundedRectangle(cornerRadius: 16)
+                .fill(Color(uiColor: .secondarySystemGroupedBackground))
+        )
     }
     
     // MARK: - Input Card
     
     private var inputCard: some View {
         VStack(alignment: .leading, spacing: 0) {
-            // Header
             HStack {
-                Label("Input", systemImage: "text.cursor")
-                    .font(.caption.weight(.medium))
+                Image(systemName: "pencil.line")
+                    .font(.system(size: 12))
+                    .foregroundStyle(Color.accentTeal)
+                Text("Original")
+                    .font(.system(size: 13, weight: .medium))
                     .foregroundStyle(.secondary)
-                
                 Spacer()
-                
-                Text("\(viewModel.characterCount)")
-                    .font(.caption.monospacedDigit())
-                    .foregroundStyle(.tertiary)
+                if viewModel.hasInput {
+                    Text("\(viewModel.wordCount) words · \(viewModel.characterCount) chars")
+                        .font(.system(size: 11, design: .monospaced))
+                        .foregroundStyle(.tertiary)
+                }
             }
             .padding(.horizontal, 16)
-            .padding(.top, 12)
-            .padding(.bottom, 8)
+            .padding(.top, 14)
+            .padding(.bottom, 10)
             
-            // Text editor
             ZStack(alignment: .topLeading) {
                 if !viewModel.hasInput {
-                    Text(inputPlaceholder)
+                    Text(viewModel.direction == .cyrillicToLatin
+                         ? "Мәтінді жазыңыз..."
+                         : "Mätindi jaziñiz...")
+                        .font(.system(size: 16))
                         .foregroundStyle(.quaternary)
                         .padding(.horizontal, 12)
                         .padding(.vertical, 8)
@@ -151,7 +201,8 @@ struct ConvertView: View {
                 
                 TextEditor(text: $viewModel.inputText)
                     .focused($isInputFocused)
-                    .frame(minHeight: 90, maxHeight: 180)
+                    .font(.system(size: 16))
+                    .frame(minHeight: 80, maxHeight: 180)
                     .scrollContentBackground(.hidden)
                     .padding(.horizontal, 8)
                     .onChange(of: viewModel.inputText) {
@@ -160,161 +211,291 @@ struct ConvertView: View {
                     }
             }
             
-            // Action bar
-            HStack(spacing: 16) {
+            HStack(spacing: 20) {
                 Spacer()
                 
                 if viewModel.hasInput {
-                    actionButton(icon: "xmark.circle", label: "Clear") {
+                    Button {
                         viewModel.clearInput()
                         isInputFocused = false
+                    } label: {
+                        Image(systemName: "xmark.circle.fill")
+                            .font(.system(size: 20))
+                            .foregroundStyle(.tertiary)
                     }
                 }
                 
-                actionButton(icon: "doc.on.clipboard", label: "Paste") {
-                    viewModel.pasteFromClipboard()
+                Button { viewModel.pasteFromClipboard() } label: {
+                    HStack(spacing: 4) {
+                        Image(systemName: "doc.on.clipboard").font(.system(size: 12))
+                        Text("Paste").font(.system(size: 13, weight: .medium))
+                    }
+                    .foregroundStyle(Color.accentTeal)
                 }
             }
             .padding(.horizontal, 16)
-            .padding(.bottom, 12)
+            .padding(.bottom, 14)
         }
-        .background(Color(uiColor: .secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 14))
-    }
-    
-    private var inputPlaceholder: String {
-        viewModel.direction == .cyrillicToLatin
-            ? "Мәтінді еңгізіңіз..."
-            : "Mätindi eñgiziñiz..."
+        .background(
+            RoundedRectangle(cornerRadius: 16)
+                .fill(Color(uiColor: .secondarySystemGroupedBackground))
+        )
     }
     
     // MARK: - Output Card
     
     private var outputCard: some View {
         VStack(alignment: .leading, spacing: 0) {
-            // Header
             HStack {
-                Label("Result", systemImage: "text.badge.checkmark")
-                    .font(.caption.weight(.medium))
+                Image(systemName: "text.badge.checkmark")
+                    .font(.system(size: 12))
+                    .foregroundStyle(Color.accentTeal)
+                Text("Converted")
+                    .font(.system(size: 13, weight: .medium))
                     .foregroundStyle(.secondary)
-                
                 Spacer()
-                
                 if viewModel.hasInput {
-                    Text(viewModel.selectedMappingID)
-                        .font(.caption2.monospacedDigit())
-                        .foregroundStyle(.tertiary)
-                        .padding(.horizontal, 6)
-                        .padding(.vertical, 2)
-                        .background(.fill.tertiary, in: Capsule())
+                    Text(viewModel.selectedMappingID == "2021" ? "Standard · 2021" : "Legacy · 2018")
+                        .font(.system(size: 10, weight: .medium, design: .monospaced))
+                        .foregroundStyle(Color.accentTeal.opacity(0.8))
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 3)
+                        .background(Color.accentTeal.opacity(0.1), in: Capsule())
                 }
             }
             .padding(.horizontal, 16)
-            .padding(.top, 12)
-            .padding(.bottom, 8)
+            .padding(.top, 14)
+            .padding(.bottom, 10)
             
-            // Output text
             Group {
                 if viewModel.hasInput {
                     Text(viewModel.outputText)
+                        .font(.system(size: 16))
                         .textSelection(.enabled)
-                        .font(.body)
                 } else {
-                    Text(outputExample)
+                    Text("Converted text will appear here")
+                        .font(.system(size: 15))
                         .foregroundStyle(.quaternary)
-                        .font(.body)
                 }
             }
             .frame(maxWidth: .infinity, minHeight: 60, alignment: .topLeading)
             .padding(.horizontal, 16)
             
-            // Action bar
             if viewModel.hasInput {
-                HStack(spacing: 16) {
+                HStack(spacing: 10) {
                     Spacer()
                     
-                    actionButton(icon: "doc.on.doc", label: "Copy") {
-                        viewModel.copyOutput()
+                    Button { viewModel.copyOutput() } label: {
+                        HStack(spacing: 5) {
+                            Image(systemName: "doc.on.doc").font(.system(size: 12))
+                            Text("Copy").font(.system(size: 13, weight: .semibold))
+                        }
+                        .foregroundStyle(.white)
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 9)
+                        .background(Color.accentTeal, in: Capsule())
                     }
                     
                     ShareLink(item: viewModel.outputText) {
-                        HStack(spacing: 4) {
-                            Image(systemName: "square.and.arrow.up")
-                                .font(.caption)
-                            Text("Share")
-                                .font(.caption)
+                        HStack(spacing: 5) {
+                            Image(systemName: "square.and.arrow.up").font(.system(size: 12))
+                            Text("Share").font(.system(size: 13, weight: .medium))
                         }
                         .foregroundStyle(.secondary)
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 9)
+                        .background(Color(uiColor: .tertiarySystemFill), in: Capsule())
                     }
                 }
                 .padding(.horizontal, 16)
             }
             
-            Spacer().frame(height: 12)
+            Spacer().frame(height: 14)
         }
-        .background(Color(uiColor: .secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 14))
+        .background(
+            RoundedRectangle(cornerRadius: 16)
+                .fill(Color(uiColor: .secondarySystemGroupedBackground))
+        )
     }
     
-    private var outputExample: String {
-        viewModel.direction == .cyrillicToLatin
-            ? "Сәлем → Sälem"
-            : "Sälem → Сәлем"
-    }
+    // MARK: - Examples Section
     
-    // MARK: - Mapping Info
-    
-    private var mappingInfo: some View {
-        HStack(spacing: 6) {
-            Image(systemName: "info.circle")
-                .font(.caption2)
+    private var examplesSection: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            HStack(spacing: 6) {
+                Image(systemName: "lightbulb")
+                    .font(.system(size: 12))
+                    .foregroundStyle(.orange)
+                Text("Try an example")
+                    .font(.system(size: 13, weight: .medium))
+                    .foregroundStyle(.secondary)
+            }
+            .padding(.horizontal, 4)
             
-            Picker("Alphabet", selection: $viewModel.selectedMappingID) {
-                ForEach(ConversionEngine.shared.availableMappings, id: \.id) { mapping in
-                    Text(mapping.displayName + (mapping.isRecommended ? " ✓" : ""))
-                        .tag(mapping.id)
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 10) {
+                    ForEach(viewModel.examplePhrases, id: \.cyrillic) { phrase in
+                        Button {
+                            viewModel.applyExample(phrase.cyrillic)
+                        } label: {
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text(phrase.cyrillic)
+                                    .font(.system(size: 14, weight: .medium))
+                                    .foregroundStyle(.primary)
+                                    .lineLimit(1)
+                                Text(phrase.latin)
+                                    .font(.system(size: 12))
+                                    .foregroundStyle(Color.accentTeal)
+                                    .lineLimit(1)
+                            }
+                            .padding(.horizontal, 14)
+                            .padding(.vertical, 10)
+                            .background(
+                                RoundedRectangle(cornerRadius: 12)
+                                    .fill(Color(uiColor: .secondarySystemGroupedBackground))
+                            )
+                        }
+                    }
                 }
             }
-            .pickerStyle(.menu)
-            .font(.caption)
-            
-            Spacer()
         }
-        .foregroundStyle(.tertiary)
-        .padding(.horizontal, 4)
     }
     
-    // MARK: - Reusable Action Button
+    // MARK: - Standard Selector
     
-    private func actionButton(icon: String, label: String, action: @escaping () -> Void) -> some View {
-        Button(action: action) {
-            HStack(spacing: 4) {
-                Image(systemName: icon)
-                    .font(.caption)
-                Text(label)
-                    .font(.caption)
+    private var standardSelector: some View {
+        Picker("Standard", selection: $viewModel.selectedMappingID) {
+            ForEach(ConversionEngine.shared.availableMappings, id: \.id) { mapping in
+                Text(mapping.id == "2021" ? "Standard 2021 (ä, ö, ü, ş) ✓" : "Legacy 2018 (á, ó, ú)")
+                    .tag(mapping.id)
             }
-            .foregroundStyle(.secondary)
         }
+        .pickerStyle(.menu)
+        .font(.system(size: 13))
+        .tint(.secondary)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.horizontal, 4)
     }
     
     // MARK: - Toast
     
-    private var toastBanner: some View {
-        HStack(spacing: 6) {
+    private var toastView: some View {
+        HStack(spacing: 8) {
             Image(systemName: "checkmark.circle.fill")
-                .foregroundStyle(.white)
             Text("Copied to clipboard")
-                .foregroundStyle(.white)
         }
-        .font(.subheadline.weight(.medium))
+        .font(.system(size: 14, weight: .semibold))
+        .foregroundStyle(.white)
         .padding(.horizontal, 20)
         .padding(.vertical, 12)
-        .background(.green.gradient, in: Capsule())
-        .shadow(color: .black.opacity(0.12), radius: 12, y: 6)
+        .background(
+            Capsule()
+                .fill(Color.accentTeal)
+                .shadow(color: Color.accentTeal.opacity(0.3), radius: 16, y: 8)
+        )
         .padding(.top, 8)
     }
 }
 
-// MARK: - Preview
+// MARK: - Alphabet Reference Sheet
+
+struct AlphabetReferenceView: View {
+    
+    @Environment(\.dismiss) private var dismiss
+    
+    private let mappings: [(cyrillic: String, latin2021: String, latin2018: String)] = [
+        ("А а", "A a", "A a"),
+        ("Ә ә", "Ä ä", "Á á"),
+        ("Б б", "B b", "B b"),
+        ("В в", "V v", "V v"),
+        ("Г г", "G g", "G g"),
+        ("Ғ ғ", "Ğ ğ", "Ǵ ǵ"),
+        ("Д д", "D d", "D d"),
+        ("Е е", "E e", "E e"),
+        ("Ж ж", "J j", "J j"),
+        ("З з", "Z z", "Z z"),
+        ("И и", "İ i", "I i"),
+        ("К к", "K k", "K k"),
+        ("Қ қ", "Q q", "Q q"),
+        ("Л л", "L l", "L l"),
+        ("М м", "M m", "M m"),
+        ("Н н", "N n", "N n"),
+        ("Ң ң", "Ñ ñ", "Ń ń"),
+        ("О о", "O o", "O o"),
+        ("Ө ө", "Ö ö", "Ó ó"),
+        ("П п", "P p", "P p"),
+        ("Р р", "R r", "R r"),
+        ("С с", "S s", "S s"),
+        ("Т т", "T t", "T t"),
+        ("У у", "U u", "U u"),
+        ("Ұ ұ", "Ū ū", "Ú ú"),
+        ("Ү ү", "Ü ü", "Ý ý"),
+        ("Ф ф", "F f", "F f"),
+        ("Х х", "H h", "H h"),
+        ("Ш ш", "Ş ş", "Sh sh"),
+        ("Ы ы", "I ı", "Y y"),
+        ("І і", "İ i", "Í í"),
+    ]
+    
+    var body: some View {
+        NavigationStack {
+            ScrollView {
+                VStack(spacing: 0) {
+                    // Header row
+                    HStack {
+                        Text("Кириллица")
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                        Text("2021")
+                            .frame(maxWidth: .infinity, alignment: .center)
+                            .foregroundStyle(Color.accentTeal)
+                        Text("2018")
+                            .frame(maxWidth: .infinity, alignment: .trailing)
+                            .foregroundStyle(.secondary)
+                    }
+                    .font(.system(size: 13, weight: .semibold))
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 12)
+                    .background(Color(uiColor: .tertiarySystemFill))
+                    
+                    // Rows
+                    ForEach(Array(mappings.enumerated()), id: \.offset) { index, row in
+                        HStack {
+                            Text(row.cyrillic)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                            Text(row.latin2021)
+                                .frame(maxWidth: .infinity, alignment: .center)
+                                .foregroundStyle(Color.accentTeal)
+                            Text(row.latin2018)
+                                .frame(maxWidth: .infinity, alignment: .trailing)
+                                .foregroundStyle(.secondary)
+                        }
+                        .font(.system(size: 15, design: .monospaced))
+                        .padding(.horizontal, 20)
+                        .padding(.vertical, 10)
+                        .background(
+                            index % 2 == 0
+                                ? Color.clear
+                                : Color(uiColor: .tertiarySystemFill).opacity(0.5)
+                        )
+                    }
+                }
+                .background(
+                    RoundedRectangle(cornerRadius: 14)
+                        .fill(Color(uiColor: .secondarySystemGroupedBackground))
+                )
+                .padding(16)
+            }
+            .background(Color(uiColor: .systemGroupedBackground))
+            .navigationTitle("Alphabet Reference")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Done") { dismiss() }
+                }
+            }
+        }
+    }
+}
 
 #Preview {
     ConvertView()

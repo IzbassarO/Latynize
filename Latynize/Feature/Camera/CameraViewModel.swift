@@ -21,13 +21,18 @@ final class CameraViewModel {
     
     var recognizedText = ""
     var convertedText = ""
-    var confidence: Float = 0
-    
     var selectedPhoto: PhotosPickerItem?
     var isProcessingPhoto = false
     
+    // Smart OCR stats
+    var recognizedBlockCount = 0
+    var averageConfidence: Float = 0
+    var detectedScript: String = ""
+    var wordCount: Int { convertedText.split(separator: " ").count }
+    
     var showError = false
     var errorMessage = ""
+    var showSavedToast = false
     
     var hasResult: Bool { !recognizedText.isEmpty }
     
@@ -49,6 +54,11 @@ final class CameraViewModel {
         guard !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
         
         recognizedText = text
+        recognizedBlockCount = 1
+        averageConfidence = 0.95 // DataScanner doesn't expose confidence per tap
+        
+        let script = ScriptDetector.detect(text)
+        detectedScript = script == .cyrillic ? "Cyrillic" : script == .latin ? "Latin" : "Mixed"
         
         let direction = ScriptDetector.suggestedDirection(for: text) ?? .cyrillicToLatin
         let result = engine.convert(text, direction: direction)
@@ -65,7 +75,10 @@ final class CameraViewModel {
     func clearResult() {
         recognizedText = ""
         convertedText = ""
-        confidence = 0
+        recognizedBlockCount = 0
+        averageConfidence = 0
+        detectedScript = ""
+        isScanning = true
         HapticService.light()
     }
     
@@ -76,38 +89,41 @@ final class CameraViewModel {
         guard let item = selectedPhoto else { return }
         
         isProcessingPhoto = true
-        defer { isProcessingPhoto = false }
+        defer {
+            isProcessingPhoto = false
+            selectedPhoto = nil
+        }
         
         do {
-            // Load image data from PhotosPicker
             guard let data = try await item.loadTransferable(type: Data.self),
                   let uiImage = UIImage(data: data) else {
-                errorMessage = "Could not load the selected image"
+                errorMessage = "Could not load the selected image."
                 showError = true
                 return
             }
             
-            // Pause live scanner while processing
             isScanning = false
             
-            // Run OCR
             let blocks = try await ocrService.recognizeText(from: uiImage)
             
             guard !blocks.isEmpty else {
-                errorMessage = "No text found in the image. Try a clearer photo with better lighting."
+                errorMessage = "No text detected in this image.\n\nTips:\n• Use a well-lit photo\n• Make sure text is clearly visible\n• Try a closer crop of the text area"
                 showError = true
                 isScanning = true
                 return
             }
             
-            // Combine all blocks
+            // Aggregate results
             let fullText = blocks.map(\.text).joined(separator: "\n")
-            let avgConfidence = blocks.map(\.confidence).reduce(0, +) / Float(blocks.count)
+            let avgConf = blocks.map(\.confidence).reduce(0, +) / Float(blocks.count)
             
             recognizedText = fullText
-            confidence = avgConfidence
+            recognizedBlockCount = blocks.count
+            averageConfidence = avgConf
             
-            // Convert
+            let script = ScriptDetector.detect(fullText)
+            detectedScript = script == .cyrillic ? "Cyrillic" : script == .latin ? "Latin" : "Mixed"
+            
             let direction = ScriptDetector.suggestedDirection(for: fullText) ?? .cyrillicToLatin
             let result = engine.convert(fullText, direction: direction)
             convertedText = result.output
@@ -119,18 +135,13 @@ final class CameraViewModel {
             showError = true
             isScanning = true
         }
-        
-        // Clear selection so user can pick again
-        selectedPhoto = nil
     }
     
     // MARK: - History
     
     func saveToHistory(context: ModelContext) {
         guard hasResult else { return }
-        
         let direction = ScriptDetector.suggestedDirection(for: recognizedText) ?? .cyrillicToLatin
-        
         let record = ConversionRecord(
             inputText: recognizedText,
             outputText: convertedText,
@@ -139,6 +150,16 @@ final class CameraViewModel {
             alphabetVersion: AppSettings.shared.alphabetVersion
         )
         context.insert(record)
+        showSavedToast = true
+        HapticService.success()
+        Task { @MainActor in
+            try? await Task.sleep(for: .seconds(1.5))
+            showSavedToast = false
+        }
+    }
+    
+    func copyConverted() {
+        UIPasteboard.general.string = convertedText
         HapticService.success()
     }
 }

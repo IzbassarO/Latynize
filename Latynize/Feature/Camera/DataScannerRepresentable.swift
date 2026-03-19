@@ -9,9 +9,7 @@ import Foundation
 import SwiftUI
 import VisionKit
 
-/// SwiftUI wrapper for DataScannerViewController (iOS 16+).
 /// Provides live camera text recognition with bounding box overlays.
-@available(iOS 16.0, *)
 struct DataScannerRepresentable: UIViewControllerRepresentable {
     
     let onTextRecognized: (String) -> Void

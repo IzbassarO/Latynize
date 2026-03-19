@@ -21,8 +21,6 @@ struct ContentView: View {
         }
     }
     
-    // MARK: - Main Tab View
-    
     private var mainTabView: some View {
         TabView(selection: $selectedTab) {
             ConvertView()
@@ -43,16 +41,12 @@ struct ContentView: View {
                 }
                 .tag(AppTab.history)
         }
-        .tint(.primary)
+        .tint(Color.accentTeal)
     }
 }
 
-// MARK: - Tab Definition
-
 enum AppTab: String, CaseIterable {
-    case convert
-    case camera
-    case history
+    case convert, camera, history
     
     var title: String {
         switch self {
@@ -71,11 +65,11 @@ enum AppTab: String, CaseIterable {
     }
 }
 
-#Preview("Main App") {
-    ContentView()
-        .modelContainer(for: ConversionRecord.self, inMemory: true)
+extension Color {
+    static let accentTeal = Color(red: 78/255, green: 205/255, blue: 196/255)
 }
 
-#Preview("Onboarding") {
-    OnboardingView()
+#Preview {
+    ContentView()
+        .modelContainer(for: ConversionRecord.self, inMemory: true)
 }

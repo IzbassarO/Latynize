@@ -32,24 +32,20 @@ struct CameraView: View {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button { showSettings = true } label: {
                         Image(systemName: "gearshape")
+                            .symbolRenderingMode(.hierarchical)
                     }
                 }
-                
                 ToolbarItem(placement: .topBarLeading) {
                     photoPickerButton
                 }
             }
-            .sheet(isPresented: $showSettings) {
-                SettingsView()
-            }
-            .alert("Error", isPresented: $viewModel.showError) {
+            .sheet(isPresented: $showSettings) { SettingsView() }
+            .alert("OCR Result", isPresented: $viewModel.showError) {
                 Button("OK") {}
             } message: {
                 Text(viewModel.errorMessage)
             }
-            .task {
-                viewModel.checkAvailability()
-            }
+            .task { viewModel.checkAvailability() }
         }
     }
     
@@ -57,179 +53,242 @@ struct CameraView: View {
     
     private var scannerLayout: some View {
         ZStack(alignment: .bottom) {
-            // Live camera
             DataScannerRepresentable(
-                onTextRecognized: { text in
-                    viewModel.handleRecognizedText(text)
-                },
-                onError: { error in
-                    viewModel.handleError(error)
-                },
+                onTextRecognized: { viewModel.handleRecognizedText($0) },
+                onError: { viewModel.handleError($0) },
                 isScanning: $viewModel.isScanning
             )
             .ignoresSafeArea(edges: .top)
             
-            // Instruction overlay (when no text recognized yet)
             if !viewModel.hasResult {
-                instructionOverlay
+                VStack {
+                    Spacer()
+                    HStack(spacing: 8) {
+                        Image(systemName: "hand.tap")
+                        Text("Tap recognized text to convert")
+                    }
+                    .font(.system(size: 14, weight: .medium))
+                    .foregroundStyle(.white)
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 12)
+                    .background(.ultraThinMaterial, in: Capsule())
+                    .padding(.bottom, 40)
+                }
             }
             
-            // Result bottom sheet
             if viewModel.hasResult {
                 resultCard
                     .transition(.move(edge: .bottom).combined(with: .opacity))
             }
         }
-        .animation(.easeInOut(duration: 0.25), value: viewModel.hasResult)
-    }
-    
-    private var instructionOverlay: some View {
-        VStack {
-            Spacer()
-            
-            HStack(spacing: 8) {
-                Image(systemName: "hand.tap")
-                    .font(.subheadline)
-                Text("Tap on recognized text to convert")
-                    .font(.subheadline)
+        .animation(.spring(duration: 0.3), value: viewModel.hasResult)
+        .overlay(alignment: .top) {
+            if viewModel.showSavedToast {
+                savedToast.transition(.move(edge: .top).combined(with: .opacity))
             }
-            .foregroundStyle(.white)
-            .padding(.horizontal, 16)
-            .padding(.vertical, 10)
-            .background(.ultraThinMaterial, in: Capsule())
-            .padding(.bottom, 40)
         }
+        .animation(.spring(duration: 0.3), value: viewModel.showSavedToast)
     }
     
     // MARK: - Result Card
     
     private var resultCard: some View {
         VStack(alignment: .leading, spacing: 12) {
-            // Header
+            // Header with stats
             HStack {
-                Label("Result", systemImage: "text.viewfinder")
-                    .font(.subheadline.weight(.medium))
+                Image(systemName: "text.viewfinder")
+                    .foregroundStyle(Color.accentTeal)
+                Text("Scan Result")
+                    .font(.system(size: 15, weight: .semibold))
                 Spacer()
-                Button {
-                    viewModel.clearResult()
-                } label: {
+                
+                // OCR stats badge
+                HStack(spacing: 4) {
+                    Circle()
+                        .fill(confidenceColor)
+                        .frame(width: 6, height: 6)
+                    Text("\(Int(viewModel.averageConfidence * 100))%")
+                        .font(.system(size: 11, weight: .medium, design: .monospaced))
+                    Text("·")
+                    Text(viewModel.detectedScript)
+                        .font(.system(size: 11, weight: .medium))
+                }
+                .foregroundStyle(.secondary)
+                
+                Button { viewModel.clearResult() } label: {
                     Image(systemName: "xmark.circle.fill")
-                        .foregroundStyle(.secondary)
+                        .font(.system(size: 22))
+                        .foregroundStyle(.tertiary)
                 }
             }
             
-            // Recognized original
+            // Original
             VStack(alignment: .leading, spacing: 4) {
-                Text("Original")
-                    .font(.caption)
+                Text("Recognized")
+                    .font(.system(size: 11, weight: .medium))
                     .foregroundStyle(.secondary)
                 Text(viewModel.recognizedText)
-                    .font(.body)
+                    .font(.system(size: 14))
                     .lineLimit(3)
+                    .textSelection(.enabled)
             }
             
             // Converted
             VStack(alignment: .leading, spacing: 4) {
-                Text("Converted")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+                HStack {
+                    Text("Converted")
+                        .font(.system(size: 11, weight: .medium))
+                        .foregroundStyle(.secondary)
+                    Spacer()
+                    Text("\(viewModel.wordCount) words")
+                        .font(.system(size: 11, design: .monospaced))
+                        .foregroundStyle(.tertiary)
+                }
                 Text(viewModel.convertedText)
-                    .font(.body)
-                    .fontWeight(.medium)
+                    .font(.system(size: 15, weight: .medium))
+                    .foregroundStyle(Color.accentTeal)
                     .textSelection(.enabled)
                     .lineLimit(3)
             }
             
             // Actions
-            HStack(spacing: 12) {
+            HStack(spacing: 8) {
                 Button {
-                    UIPasteboard.general.string = viewModel.convertedText
-                    HapticService.success()
+                    viewModel.copyConverted()
                 } label: {
-                    Label("Copy", systemImage: "doc.on.doc")
-                        .frame(maxWidth: .infinity)
+                    HStack(spacing: 5) {
+                        Image(systemName: "doc.on.doc").font(.system(size: 12))
+                        Text("Copy").font(.system(size: 13, weight: .semibold))
+                    }
+                    .foregroundStyle(.white)
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 9)
+                    .background(Color.accentTeal, in: Capsule())
                 }
-                .buttonStyle(.bordered)
                 
                 ShareLink(item: viewModel.convertedText) {
-                    Label("Share", systemImage: "square.and.arrow.up")
-                        .frame(maxWidth: .infinity)
+                    HStack(spacing: 5) {
+                        Image(systemName: "square.and.arrow.up").font(.system(size: 12))
+                        Text("Share").font(.system(size: 13, weight: .medium))
+                    }
+                    .foregroundStyle(.secondary)
+                    .padding(.horizontal, 14)
+                    .padding(.vertical, 9)
+                    .background(Color(uiColor: .tertiarySystemFill), in: Capsule())
                 }
-                .buttonStyle(.bordered)
                 
                 Button {
                     viewModel.saveToHistory(context: modelContext)
                 } label: {
-                    Label("Save", systemImage: "square.and.arrow.down")
-                        .frame(maxWidth: .infinity)
+                    HStack(spacing: 5) {
+                        Image(systemName: "bookmark").font(.system(size: 12))
+                        Text("Save").font(.system(size: 13, weight: .medium))
+                    }
+                    .foregroundStyle(.secondary)
+                    .padding(.horizontal, 14)
+                    .padding(.vertical, 9)
+                    .background(Color(uiColor: .tertiarySystemFill), in: Capsule())
                 }
-                .buttonStyle(.bordered)
+                
+                Spacer()
             }
-            .font(.subheadline)
         }
-        .padding(16)
-        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 20))
+        .padding(18)
+        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 22))
         .padding(.horizontal, 12)
         .padding(.bottom, 8)
+    }
+    
+    private var confidenceColor: Color {
+        if viewModel.averageConfidence >= 0.9 { return .green }
+        if viewModel.averageConfidence >= 0.7 { return .orange }
+        return .red
+    }
+    
+    private var savedToast: some View {
+        HStack(spacing: 8) {
+            Image(systemName: "bookmark.fill")
+            Text("Saved to history")
+        }
+        .font(.system(size: 14, weight: .semibold))
+        .foregroundStyle(.white)
+        .padding(.horizontal, 20)
+        .padding(.vertical, 12)
+        .background(Capsule().fill(Color.accentTeal))
+        .padding(.top, 60)
     }
     
     // MARK: - Photo Picker
     
     private var photoPickerButton: some View {
-        PhotosPicker(
-            selection: $viewModel.selectedPhoto,
-            matching: .images,
-            photoLibrary: .shared()
-        ) {
-            Image(systemName: "photo.on.rectangle")
+        PhotosPicker(selection: $viewModel.selectedPhoto, matching: .images) {
+            Image(systemName: "photo.on.rectangle.angled")
+                .symbolRenderingMode(.hierarchical)
         }
         .onChange(of: viewModel.selectedPhoto) {
-            Task {
-                await viewModel.processSelectedPhoto()
+            Task { await viewModel.processSelectedPhoto() }
+        }
+        .overlay {
+            if viewModel.isProcessingPhoto {
+                ProgressView()
+                    .scaleEffect(0.7)
             }
         }
     }
     
-    // MARK: - Fallback (unsupported device)
+    // MARK: - Fallback
     
     private var fallbackLayout: some View {
-        VStack(spacing: 20) {
-            Spacer()
-            
-            Image(systemName: "camera.badge.ellipsis")
-                .font(.system(size: 56))
-                .foregroundStyle(.secondary)
-            
-            Text("Camera OCR not available")
-                .font(.headline)
-            
-            Text("This device doesn't support live text scanning.\nYou can still select a photo from your library.")
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
-                .multilineTextAlignment(.center)
-            
-            PhotosPicker(
-                selection: $viewModel.selectedPhoto,
-                matching: .images
-            ) {
-                Label("Choose Photo", systemImage: "photo")
-                    .frame(maxWidth: .infinity)
-            }
-            .buttonStyle(.borderedProminent)
-            .padding(.horizontal, 40)
-            .onChange(of: viewModel.selectedPhoto) {
-                Task {
-                    await viewModel.processSelectedPhoto()
+        ScrollView {
+            VStack(spacing: 24) {
+                Spacer().frame(height: 60)
+                
+                ZStack {
+                    Circle()
+                        .fill(Color.accentTeal.opacity(0.08))
+                        .frame(width: 120, height: 120)
+                    Image(systemName: "camera.viewfinder")
+                        .font(.system(size: 44, weight: .light))
+                        .foregroundStyle(Color.accentTeal.opacity(0.6))
                 }
+                
+                VStack(spacing: 8) {
+                    Text("Camera OCR")
+                        .font(.system(size: 22, weight: .bold))
+                    Text("Live scanning requires a physical device.\nChoose a photo to scan text from an image.")
+                        .font(.system(size: 15))
+                        .foregroundStyle(.secondary)
+                        .multilineTextAlignment(.center)
+                }
+                
+                PhotosPicker(selection: $viewModel.selectedPhoto, matching: .images) {
+                    HStack(spacing: 8) {
+                        Image(systemName: "photo")
+                        Text("Choose Photo")
+                    }
+                    .font(.system(size: 16, weight: .semibold))
+                    .foregroundStyle(.white)
+                    .frame(maxWidth: 260)
+                    .padding(.vertical, 14)
+                    .background(Color.accentTeal, in: RoundedRectangle(cornerRadius: 14))
+                }
+                .onChange(of: viewModel.selectedPhoto) {
+                    Task { await viewModel.processSelectedPhoto() }
+                }
+                
+                if viewModel.isProcessingPhoto {
+                    ProgressView("Scanning text...")
+                        .font(.system(size: 14))
+                }
+                
+                if viewModel.hasResult {
+                    resultCard
+                }
+                
+                Spacer()
             }
-            
-            if viewModel.hasResult {
-                resultCard
-            }
-            
-            Spacer()
+            .padding(.horizontal, 20)
         }
-        .padding()
     }
 }
 

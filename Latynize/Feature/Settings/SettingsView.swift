@@ -14,17 +14,10 @@ struct SettingsView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
     
-    @AppStorage(AppSettings.Key.alphabetVersion)
-    private var alphabetVersion = "2021"
-    
-    @AppStorage(AppSettings.Key.autoDetectDirection)
-    private var autoDetect = true
-    
-    @AppStorage(AppSettings.Key.autoSaveHistory)
-    private var autoSave = true
-    
-    @AppStorage(AppSettings.Key.hapticFeedback)
-    private var hapticEnabled = true
+    @AppStorage(AppSettings.Key.alphabetVersion) private var alphabetVersion = "2021"
+    @AppStorage(AppSettings.Key.autoDetectDirection) private var autoDetect = true
+    @AppStorage(AppSettings.Key.autoSaveHistory) private var autoSave = true
+    @AppStorage(AppSettings.Key.hapticFeedback) private var hapticEnabled = true
     
     @State private var showClearAlert = false
     @State private var showAlphabetInfo = false
@@ -35,8 +28,8 @@ struct SettingsView: View {
     var body: some View {
         NavigationStack {
             Form {
-                alphabetSection
-                conversionSection
+                standardSection
+                preferencesSection
                 dataSection
                 aboutSection
             }
@@ -44,169 +37,184 @@ struct SettingsView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Done") { dismiss() }
-                        .fontWeight(.medium)
+                    Button("Done") { dismiss() }.fontWeight(.semibold)
                 }
             }
             .alert("Clear all history?", isPresented: $showClearAlert) {
                 Button("Cancel", role: .cancel) {}
                 Button("Clear", role: .destructive) { clearHistory() }
             } message: {
-                Text("This will permanently delete all saved conversions.")
+                Text("All saved conversions will be permanently deleted.")
             }
-            .sheet(isPresented: $showAlphabetInfo) {
-                alphabetInfoSheet
-            }
+            .sheet(isPresented: $showAlphabetInfo) { alphabetSheet }
         }
     }
     
-    // MARK: - Alphabet Section
+    // MARK: - Standard Section
     
-    private var alphabetSection: some View {
+    private var standardSection: some View {
         Section {
-            Picker("Standard", selection: $alphabetVersion) {
-                ForEach(ConversionEngine.shared.availableMappings, id: \.id) { mapping in
-                    HStack {
-                        Text(mapping.displayName)
-                        if mapping.isRecommended {
-                            Text("✓")
-                                .foregroundStyle(.green)
-                        }
-                    }
-                    .tag(mapping.id)
+            HStack {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Conversion Standard")
+                        .font(.system(size: 15))
+                    Text(alphabetVersion == "2021" ? "Modern · 31 letters · Diacritics" : "Legacy · 32 letters · Acute accents")
+                        .font(.system(size: 12))
+                        .foregroundStyle(.secondary)
                 }
+                
+                Spacer()
+                
+                Picker("", selection: $alphabetVersion) {
+                    Text("2021").tag("2021")
+                    Text("2018").tag("2018")
+                }
+                .pickerStyle(.segmented)
+                .frame(width: 130)
             }
             
             Button {
                 showAlphabetInfo = true
             } label: {
                 HStack {
-                    Text("About alphabet versions")
-                        .foregroundStyle(.primary)
-                    Spacer()
                     Image(systemName: "info.circle")
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(Color.accentTeal)
+                    Text("Compare standards")
+                        .foregroundStyle(.primary)
+                        .font(.system(size: 15))
+                    Spacer()
+                    Image(systemName: "chevron.right")
+                        .font(.system(size: 12, weight: .semibold))
+                        .foregroundStyle(.tertiary)
                 }
             }
         } header: {
-            Text("Alphabet")
-        } footer: {
-            Text("The 2021 standard uses diacritics (ä, ö, ü, ş, ğ, ñ) with 31 letters. Recommended for most users.")
+            Text("Standard")
         }
     }
     
-    // MARK: - Conversion Section
+    // MARK: - Preferences
     
-    private var conversionSection: some View {
+    private var preferencesSection: some View {
         Section {
-            Toggle("Auto-detect direction", isOn: $autoDetect)
-            Toggle("Auto-save to history", isOn: $autoSave)
+            Toggle(isOn: $autoDetect) {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Smart direction")
+                        .font(.system(size: 15))
+                    Text("Auto-detect Cyrillic or Latin input")
+                        .font(.system(size: 12))
+                        .foregroundStyle(.secondary)
+                }
+            }
+            .tint(Color.accentTeal)
+            
+            Toggle(isOn: $autoSave) {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Auto-save history")
+                        .font(.system(size: 15))
+                    Text("Save conversions automatically")
+                        .font(.system(size: 12))
+                        .foregroundStyle(.secondary)
+                }
+            }
+            .tint(Color.accentTeal)
+            
             Toggle("Haptic feedback", isOn: $hapticEnabled)
+                .font(.system(size: 15))
+                .tint(Color.accentTeal)
         } header: {
-            Text("Conversion")
-        } footer: {
-            Text("Auto-detect analyzes your input text and sets the conversion direction automatically.")
+            Text("Preferences")
         }
     }
     
-    // MARK: - Data Section
+    // MARK: - Data
     
     private var dataSection: some View {
-        Section("Data") {
-            Button("Clear history", role: .destructive) {
+        Section {
+            Button(role: .destructive) {
                 showClearAlert = true
+            } label: {
+                HStack {
+                    Image(systemName: "trash")
+                    Text("Clear conversion history")
+                }
+                .font(.system(size: 15))
             }
+        } header: {
+            Text("Data")
         }
     }
     
-    // MARK: - About Section
+    // MARK: - About
     
     private var aboutSection: some View {
-        Section("About") {
+        Section {
             HStack {
                 Text("Version")
+                    .font(.system(size: 15))
                 Spacer()
                 Text("\(appVersion) (\(buildNumber))")
+                    .font(.system(size: 15))
                     .foregroundStyle(.secondary)
             }
             
-            Link(destination: URL(string: "https://izbassar.dev/latynize/privacy")!) {
+            Link(destination: URL(string: "https://izbassar.dev/privacy")!) {
                 HStack {
                     Text("Privacy Policy")
+                        .font(.system(size: 15))
                         .foregroundStyle(.primary)
                     Spacer()
                     Image(systemName: "arrow.up.right")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .font(.system(size: 11))
+                        .foregroundStyle(.tertiary)
                 }
             }
+        } header: {
+            Text("About")
+        } footer: {
+            Text("Latynize — Kazakh Script Converter\nAll processing happens on-device. No data leaves your phone.")
+                .multilineTextAlignment(.center)
+                .frame(maxWidth: .infinity)
+                .padding(.top, 16)
         }
     }
     
     // MARK: - Alphabet Info Sheet
     
-    private var alphabetInfoSheet: some View {
+    private var alphabetSheet: some View {
         NavigationStack {
             ScrollView {
-                VStack(alignment: .leading, spacing: 20) {
+                VStack(alignment: .leading, spacing: 24) {
+                    standardCard(
+                        title: "Standard 2021",
+                        badge: "Recommended",
+                        badgeColor: Color.accentTeal,
+                        description: "31 letters using internationally recognized diacritical marks. Follows the \"one sound — one letter\" principle.",
+                        details: "Uses umlauts (ä, ö, ü), macron (ū), cedilla (ş, ğ), and tilde (ñ).",
+                        alphabet: "A Ä B D E F G Ğ H İ I J K L M N Ñ O Ö P Q R S Ş T U Ū Ü V Y Z"
+                    )
                     
-                    // 2021 version
-                    VStack(alignment: .leading, spacing: 8) {
-                        HStack {
-                            Text("2021 Standard")
-                                .font(.headline)
-                            Text("Recommended")
-                                .font(.caption)
-                                .foregroundStyle(.green)
-                                .padding(.horizontal, 8)
-                                .padding(.vertical, 2)
-                                .background(.green.opacity(0.1), in: Capsule())
-                        }
-                        
-                        Text("31 letters with diacritical marks based on international practice. Uses umlauts (ä, ö, ü), macron (ū), cedilla (ş, ğ), and tilde (ñ).")
-                            .font(.subheadline)
-                            .foregroundStyle(.secondary)
-                        
-                        Text("A Ä B D E F G Ğ H İ I J K L M N Ñ O Ö P Q R S Ş T U Ū Ü V Y Z")
-                            .font(.system(.caption, design: .monospaced))
-                            .padding(12)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .background(.fill.quaternary, in: RoundedRectangle(cornerRadius: 8))
-                    }
+                    standardCard(
+                        title: "Legacy 2018",
+                        badge: "Decree №637",
+                        badgeColor: .secondary,
+                        description: "32 letters using acute accents and digraphs. Replaced the 2017 apostrophe version.",
+                        details: "Uses á, ǵ, ń, ó, ú, ý, í and digraphs like Sh for Ш.",
+                        alphabet: "A Á B V G Ǵ D E J Z I K Q L M N Ń O Ó P R S T U Ú Ý F H Sh Y Í"
+                    )
                     
-                    Divider()
-                    
-                    // 2018 version
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("2018 Standard (Decree №637)")
-                            .font(.headline)
-                        
-                        Text("32 letters with acute accents and digraphs. Replaced the 2017 apostrophe-based version. Uses á, ǵ, ń, ó, ú, ý, í and digraphs like Sh for Ш.")
-                            .font(.subheadline)
-                            .foregroundStyle(.secondary)
-                        
-                        Text("A Á B V G Ǵ D E J Z I K Q L M N Ń O Ó P R S T U Ú Ý F H Sh Y Í")
-                            .font(.system(.caption, design: .monospaced))
-                            .padding(12)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .background(.fill.quaternary, in: RoundedRectangle(cornerRadius: 8))
-                    }
-                    
-                    Divider()
-                    
-                    // Context
                     VStack(alignment: .leading, spacing: 8) {
                         Text("Background")
-                            .font(.headline)
-                        
-                        Text("Kazakhstan is transitioning its Kazakh alphabet from Cyrillic to Latin script. The reform was initiated in 2017 with a phased transition planned through 2031. Multiple versions of the Latin alphabet have been proposed — the 2021 version is widely considered the final candidate.")
-                            .font(.subheadline)
+                            .font(.system(size: 17, weight: .semibold))
+                        Text("Kazakhstan is transitioning its Kazakh-language alphabet from Cyrillic to Latin script. The reform started in 2017 with a phased transition planned through 2031. The 2021 version is widely considered the final candidate.")
+                            .font(.system(size: 15))
                             .foregroundStyle(.secondary)
+                            .lineSpacing(3)
                     }
                 }
-                .padding()
+                .padding(20)
             }
-            .navigationTitle("Alphabet Versions")
+            .navigationTitle("Standards")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -214,17 +222,49 @@ struct SettingsView: View {
                 }
             }
         }
-        .presentationDetents([.large])
     }
     
-    // MARK: - Actions
+    private func standardCard(title: String, badge: String, badgeColor: Color, description: String, details: String, alphabet: String) -> some View {
+        VStack(alignment: .leading, spacing: 10) {
+            HStack(spacing: 8) {
+                Text(title)
+                    .font(.system(size: 17, weight: .semibold))
+                Text(badge)
+                    .font(.system(size: 11, weight: .semibold))
+                    .foregroundStyle(badgeColor)
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 3)
+                    .background(badgeColor.opacity(0.12), in: Capsule())
+            }
+            
+            Text(description)
+                .font(.system(size: 14))
+                .foregroundStyle(.secondary)
+                .lineSpacing(2)
+            
+            Text(details)
+                .font(.system(size: 13))
+                .foregroundStyle(.tertiary)
+            
+            Text(alphabet)
+                .font(.system(size: 13, design: .monospaced))
+                .padding(12)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(Color(uiColor: .tertiarySystemFill), in: RoundedRectangle(cornerRadius: 10))
+        }
+        .padding(16)
+        .background(
+            RoundedRectangle(cornerRadius: 14)
+                .fill(Color(uiColor: .secondarySystemGroupedBackground))
+        )
+    }
     
     private func clearHistory() {
         do {
             try modelContext.delete(model: ConversionRecord.self)
             HapticService.medium()
         } catch {
-            print("Failed to clear history: \(error)")
+            print("Failed: \(error)")
         }
     }
 }

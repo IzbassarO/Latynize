@@ -11,8 +11,6 @@ final class AppSettings {
     
     static let shared = AppSettings()
     
-    // MARK: - Keys
-    
     enum Key {
         static let alphabetVersion = "settings_alphabet_version"
         static let autoDetectDirection = "settings_auto_detect"
@@ -20,8 +18,6 @@ final class AppSettings {
         static let hapticFeedback = "settings_haptic"
         static let lastUsedDirection = "settings_last_direction"
     }
-    
-    // MARK: - Properties
     
     private let defaults = UserDefaults.standard
     
