@@ -42,6 +42,7 @@ struct ContentView: View {
                 .tag(AppTab.history)
         }
         .tint(Color.accentTeal)
+        .environment(ThemeManager.shared)
     }
 }
 

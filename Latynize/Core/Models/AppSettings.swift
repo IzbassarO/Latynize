@@ -17,9 +17,16 @@ final class AppSettings {
         static let autoSaveHistory = "settings_auto_save"
         static let hapticFeedback = "settings_haptic"
         static let lastUsedDirection = "settings_last_direction"
+        static let keyboardMode = "settings_keyboard_mode"
+        static let themeMode = "settings_theme_mode"
     }
     
-    private let defaults = UserDefaults.standard
+    /// Shared UserDefaults accessible by both main app and keyboard extension
+    private let defaults: UserDefaults
+    
+    init() {
+        self.defaults = .standard
+    }
     
     var alphabetVersion: String {
         get { defaults.string(forKey: Key.alphabetVersion) ?? "2021" }
@@ -49,5 +56,10 @@ final class AppSettings {
     var lastUsedDirection: ConversionDirection {
         get { ConversionDirection(rawValue: lastUsedDirectionRaw) ?? .cyrillicToLatin }
         set { lastUsedDirectionRaw = newValue.rawValue }
+    }
+    
+    var themeMode: String {
+        get { defaults.string(forKey: Key.themeMode) ?? "system" }
+        set { defaults.set(newValue, forKey: Key.themeMode) }
     }
 }

@@ -6,18 +6,7 @@
 	objectVersion = 77;
 	objects = {
 
-/* Begin PBXBuildFile section */
-		A23381152F73AF2C00F41F25 /* LatynizeKeyboard.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = A233810E2F73AF2C00F41F25 /* LatynizeKeyboard.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-/* End PBXBuildFile section */
-
 /* Begin PBXContainerItemProxy section */
-		A23381132F73AF2C00F41F25 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A2B7C4B82F6BBBC9009B7043 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = A233810D2F73AF2C00F41F25;
-			remoteInfo = LatynizeKeyboard;
-		};
 		A2B7C4D02F6BBBCB009B7043 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A2B7C4B82F6BBBC9009B7043 /* Project object */;
@@ -41,7 +30,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				A23381152F73AF2C00F41F25 /* LatynizeKeyboard.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -49,65 +37,34 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		A233810E2F73AF2C00F41F25 /* LatynizeKeyboard.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = LatynizeKeyboard.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2B7C4C02F6BBBC9009B7043 /* Latynize.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Latynize.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2B7C4CF2F6BBBCB009B7043 /* LatynizeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LatynizeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2B7C4D92F6BBBCB009B7043 /* LatynizeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LatynizeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		A23381192F73AF2C00F41F25 /* Exceptions for "LatynizeKeyboard" folder in "LatynizeKeyboard" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Info.plist,
-			);
-			target = A233810D2F73AF2C00F41F25 /* LatynizeKeyboard */;
-		};
-		A23381202F73B05E00F41F25 /* Exceptions for "Latynize" folder in "LatynizeKeyboard" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Core/Engine/Alphabet2018.swift,
-				Core/Engine/Alphabet2021.swift,
-				Core/Engine/AlphabetMapping.swift,
-				Core/Engine/ConversionEngine.swift,
-				Core/Engine/ScriptDetector.swift,
-				Core/Models/AppSettings.swift,
-				Core/Services/HapticService.swift,
-			);
-			target = A233810D2F73AF2C00F41F25 /* LatynizeKeyboard */;
-		};
-		A2BE28A02F6F0DF20083318D /* Exceptions for "Latynize" folder in "Latynize" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Info.plist,
-				Tests/ConversionEngineTests.swift,
-			);
-			target = A2B7C4BF2F6BBBC9009B7043 /* Latynize */;
-		};
-		A2BE28A12F6F0DF20083318D /* Exceptions for "Latynize" folder in "LatynizeTests" target */ = {
+		A233818A2F73BE9900F41F25 /* Exceptions for "Latynize" folder in "LatynizeTests" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Tests/ConversionEngineTests.swift,
 			);
 			target = A2B7C4CE2F6BBBCB009B7043 /* LatynizeTests */;
 		};
+		A233818B2F73BEAA00F41F25 /* Exceptions for "Latynize" folder in "Latynize" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Tests/ConversionEngineTests.swift,
+			);
+			target = A2B7C4BF2F6BBBC9009B7043 /* Latynize */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		A233810F2F73AF2C00F41F25 /* LatynizeKeyboard */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				A23381192F73AF2C00F41F25 /* Exceptions for "LatynizeKeyboard" folder in "LatynizeKeyboard" target */,
-			);
-			path = LatynizeKeyboard;
-			sourceTree = "<group>";
-		};
 		A2B7C4C22F6BBBC9009B7043 /* Latynize */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				A2BE28A02F6F0DF20083318D /* Exceptions for "Latynize" folder in "Latynize" target */,
-				A2BE28A12F6F0DF20083318D /* Exceptions for "Latynize" folder in "LatynizeTests" target */,
-				A23381202F73B05E00F41F25 /* Exceptions for "Latynize" folder in "LatynizeKeyboard" target */,
+				A233818B2F73BEAA00F41F25 /* Exceptions for "Latynize" folder in "Latynize" target */,
+				A233818A2F73BE9900F41F25 /* Exceptions for "Latynize" folder in "LatynizeTests" target */,
 			);
 			path = Latynize;
 			sourceTree = "<group>";
@@ -125,13 +82,6 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		A233810B2F73AF2C00F41F25 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		A2B7C4BD2F6BBBC9009B7043 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -162,7 +112,6 @@
 				A2B7C4C22F6BBBC9009B7043 /* Latynize */,
 				A2B7C4D22F6BBBCB009B7043 /* LatynizeTests */,
 				A2B7C4DC2F6BBBCB009B7043 /* LatynizeUITests */,
-				A233810F2F73AF2C00F41F25 /* LatynizeKeyboard */,
 				A2B7C4C12F6BBBC9009B7043 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -173,7 +122,6 @@
 				A2B7C4C02F6BBBC9009B7043 /* Latynize.app */,
 				A2B7C4CF2F6BBBCB009B7043 /* LatynizeTests.xctest */,
 				A2B7C4D92F6BBBCB009B7043 /* LatynizeUITests.xctest */,
-				A233810E2F73AF2C00F41F25 /* LatynizeKeyboard.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -181,28 +129,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		A233810D2F73AF2C00F41F25 /* LatynizeKeyboard */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = A23381162F73AF2C00F41F25 /* Build configuration list for PBXNativeTarget "LatynizeKeyboard" */;
-			buildPhases = (
-				A233810A2F73AF2C00F41F25 /* Sources */,
-				A233810B2F73AF2C00F41F25 /* Frameworks */,
-				A233810C2F73AF2C00F41F25 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			fileSystemSynchronizedGroups = (
-				A233810F2F73AF2C00F41F25 /* LatynizeKeyboard */,
-			);
-			name = LatynizeKeyboard;
-			packageProductDependencies = (
-			);
-			productName = LatynizeKeyboard;
-			productReference = A233810E2F73AF2C00F41F25 /* LatynizeKeyboard.appex */;
-			productType = "com.apple.product-type.app-extension";
-		};
 		A2B7C4BF2F6BBBC9009B7043 /* Latynize */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = A2B7C4E32F6BBBCB009B7043 /* Build configuration list for PBXNativeTarget "Latynize" */;
@@ -215,7 +141,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				A23381142F73AF2C00F41F25 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				A2B7C4C22F6BBBC9009B7043 /* Latynize */,
@@ -283,9 +208,6 @@
 				LastSwiftUpdateCheck = 2600;
 				LastUpgradeCheck = 2600;
 				TargetAttributes = {
-					A233810D2F73AF2C00F41F25 = {
-						CreatedOnToolsVersion = 26.0.1;
-					};
 					A2B7C4BF2F6BBBC9009B7043 = {
 						CreatedOnToolsVersion = 26.0.1;
 					};
@@ -316,19 +238,11 @@
 				A2B7C4BF2F6BBBC9009B7043 /* Latynize */,
 				A2B7C4CE2F6BBBCB009B7043 /* LatynizeTests */,
 				A2B7C4D82F6BBBCB009B7043 /* LatynizeUITests */,
-				A233810D2F73AF2C00F41F25 /* LatynizeKeyboard */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		A233810C2F73AF2C00F41F25 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		A2B7C4BE2F6BBBC9009B7043 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -353,13 +267,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		A233810A2F73AF2C00F41F25 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		A2B7C4BC2F6BBBC9009B7043 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -384,11 +291,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		A23381142F73AF2C00F41F25 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = A233810D2F73AF2C00F41F25 /* LatynizeKeyboard */;
-			targetProxy = A23381132F73AF2C00F41F25 /* PBXContainerItemProxy */;
-		};
 		A2B7C4D12F6BBBCB009B7043 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = A2B7C4BF2F6BBBC9009B7043 /* Latynize */;
@@ -402,64 +304,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		A23381172F73AF2C00F41F25 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 5S8YJ969V5;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = LatynizeKeyboard/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = LatynizeKeyboard;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = dev.izbassar.Latynize.LatynizeKeyboard;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				STRING_CATALOG_GENERATE_SYMBOLS = YES;
-				SWIFT_APPROACHABLE_CONCURRENCY = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		A23381182F73AF2C00F41F25 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 5S8YJ969V5;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = LatynizeKeyboard/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = LatynizeKeyboard;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = dev.izbassar.Latynize.LatynizeKeyboard;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				STRING_CATALOG_GENERATE_SYMBOLS = YES;
-				SWIFT_APPROACHABLE_CONCURRENCY = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
 		A2B7C4E12F6BBBCB009B7043 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -586,12 +430,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Latynize/Latynize.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 5S8YJ969V5;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Latynize/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Latynize;
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
@@ -629,12 +473,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Latynize/Latynize.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 5S8YJ969V5;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Latynize/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Latynize;
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
@@ -754,15 +598,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		A23381162F73AF2C00F41F25 /* Build configuration list for PBXNativeTarget "LatynizeKeyboard" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				A23381172F73AF2C00F41F25 /* Debug */,
-				A23381182F73AF2C00F41F25 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		A2B7C4BB2F6BBBC9009B7043 /* Build configuration list for PBXProject "Latynize" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

@@ -13,6 +13,7 @@ struct SettingsView: View {
     
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
+    @Environment(ThemeManager.self) private var theme
     
     @AppStorage(AppSettings.Key.alphabetVersion) private var alphabetVersion = "2021"
     @AppStorage(AppSettings.Key.autoDetectDirection) private var autoDetect = true
@@ -29,6 +30,7 @@ struct SettingsView: View {
         NavigationStack {
             Form {
                 standardSection
+                appearanceSection
                 preferencesSection
                 dataSection
                 aboutSection
@@ -91,6 +93,71 @@ struct SettingsView: View {
         } header: {
             Text("Standard")
         }
+    }
+    
+    // MARK: - Theme
+    private var appearanceSection: some View {
+        @Bindable var themeBinding = theme
+        
+        return Section {
+            VStack(spacing: 12) {
+                HStack(spacing: 10) {
+                    ForEach(AppTheme.allCases, id: \.self) { option in
+                        themeOption(option, isSelected: theme.currentTheme == option) {
+                            withAnimation(.smooth(duration: 0.4)) {
+                                themeBinding.currentTheme = option
+                            }
+                            HapticService.selection()
+                        }
+                    }
+                }
+                .padding(.vertical, 4)
+            }
+        } header: {
+            Text("Appearance")
+        } footer: {
+            Text(appearanceFooter)
+                .font(.system(size: 12))
+                .foregroundStyle(.secondary)
+        }
+    }
+
+    private var appearanceFooter: String {
+        switch theme.currentTheme {
+        case .system: return "Follows your device settings"
+        case .light:  return "Always use light appearance"
+        case .dark:   return "Always use dark appearance"
+        }
+    }
+
+    private func themeOption(_ theme: AppTheme, isSelected: Bool, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            VStack(spacing: 8) {
+                ZStack {
+                    Circle()
+                        .fill(isSelected ? Color.accentTeal : Color(uiColor: .tertiarySystemFill))
+                        .frame(width: 52, height: 52)
+                    
+                    Image(systemName: theme.icon)
+                        .font(.system(size: 22, weight: .medium))
+                        .foregroundStyle(isSelected ? .white : .secondary)
+                        .symbolRenderingMode(.hierarchical)
+                }
+                .scaleEffect(isSelected ? 1.05 : 1.0)
+                .animation(.spring(duration: 0.35, bounce: 0.35), value: isSelected)
+                
+                Text(theme.label)
+                    .font(.system(size: 13, weight: isSelected ? .semibold : .medium))
+                    .foregroundStyle(isSelected ? Color.accentTeal : .secondary)
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 8)
+            .background(
+                RoundedRectangle(cornerRadius: 14)
+                    .fill(isSelected ? Color.accentTeal.opacity(0.1) : Color.clear)
+            )
+        }
+        .buttonStyle(.plain)
     }
     
     // MARK: - Preferences
