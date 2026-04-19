@@ -19,6 +19,7 @@ final class AppSettings {
         static let lastUsedDirection = "settings_last_direction"
         static let keyboardMode = "settings_keyboard_mode"
         static let themeMode = "settings_theme_mode"
+        static let appLanguage = "settings_app_language"
     }
     
     /// Shared UserDefaults accessible by both main app and keyboard extension
@@ -61,5 +62,10 @@ final class AppSettings {
     var themeMode: String {
         get { defaults.string(forKey: Key.themeMode) ?? "system" }
         set { defaults.set(newValue, forKey: Key.themeMode) }
+    }
+    
+    var appLanguage: String {
+        get { defaults.string(forKey: Key.appLanguage) ?? "system" }
+        set { defaults.set(newValue, forKey: Key.appLanguage) }
     }
 }

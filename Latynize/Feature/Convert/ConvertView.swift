@@ -12,6 +12,7 @@ import SwiftData
 struct ConvertView: View {
     
     @Environment(\.modelContext) private var modelContext
+    @Environment(ThemeManager.self) private var theme
     @State private var viewModel = ConvertViewModel()
     @State private var showSettings = false
     @FocusState private var isInputFocused: Bool
@@ -43,6 +44,7 @@ struct ConvertView: View {
                     .padding(.horizontal, 16)
                     .padding(.top, 4)
                     .padding(.bottom, 120)
+                    .contentShape(Rectangle())
                 }
                 .scrollDismissesKeyboard(.interactively)
             }
@@ -62,7 +64,12 @@ struct ConvertView: View {
                     }
                 }
             }
-            .sheet(isPresented: $showSettings) { SettingsView() }
+            .onTapGesture { isInputFocused = false }
+            .sheet(isPresented: $showSettings) {
+                SettingsView()
+                    .environment(theme)
+                    .preferredColorScheme(theme.currentTheme.colorScheme)
+            }
             .sheet(isPresented: $viewModel.showAlphabetReference) { AlphabetReferenceView() }
             .overlay(alignment: .top) {
                 if viewModel.showCopiedToast {
@@ -208,6 +215,17 @@ struct ConvertView: View {
                     .onChange(of: viewModel.inputText) {
                         viewModel.onInputChanged()
                         viewModel.scheduleAutoSave(context: modelContext)
+                    }
+                    .toolbar {
+                        ToolbarItemGroup(placement: .keyboard) {
+                            Spacer()
+                            Button {
+                                hideKeyboard()
+                            } label: {
+                                Image(systemName: "keyboard.chevron.compact.down")
+                                    .foregroundStyle(Color.accentTeal)
+                            }
+                        }
                     }
             }
             

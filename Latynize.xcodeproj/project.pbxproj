@@ -43,19 +43,19 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		A233818A2F73BE9900F41F25 /* Exceptions for "Latynize" folder in "LatynizeTests" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Tests/ConversionEngineTests.swift,
-			);
-			target = A2B7C4CE2F6BBBCB009B7043 /* LatynizeTests */;
-		};
-		A233818B2F73BEAA00F41F25 /* Exceptions for "Latynize" folder in "Latynize" target */ = {
+		A2A6DC412F954F2E002C3C07 /* Exceptions for "Latynize" folder in "Latynize" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Tests/ConversionEngineTests.swift,
 			);
 			target = A2B7C4BF2F6BBBC9009B7043 /* Latynize */;
+		};
+		A2A6DC422F954F2E002C3C07 /* Exceptions for "Latynize" folder in "LatynizeTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Tests/ConversionEngineTests.swift,
+			);
+			target = A2B7C4CE2F6BBBCB009B7043 /* LatynizeTests */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
@@ -63,8 +63,8 @@
 		A2B7C4C22F6BBBC9009B7043 /* Latynize */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				A233818B2F73BEAA00F41F25 /* Exceptions for "Latynize" folder in "Latynize" target */,
-				A233818A2F73BE9900F41F25 /* Exceptions for "Latynize" folder in "LatynizeTests" target */,
+				A2A6DC412F954F2E002C3C07 /* Exceptions for "Latynize" folder in "Latynize" target */,
+				A2A6DC422F954F2E002C3C07 /* Exceptions for "Latynize" folder in "LatynizeTests" target */,
 			);
 			path = Latynize;
 			sourceTree = "<group>";
@@ -227,6 +227,8 @@
 			knownRegions = (
 				en,
 				Base,
+				ru,
+				kk,
 			);
 			mainGroup = A2B7C4B72F6BBBC9009B7043;
 			minimizedProjectReferenceProxies = 1;
@@ -364,6 +366,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -421,6 +424,7 @@
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;

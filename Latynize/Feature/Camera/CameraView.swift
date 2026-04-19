@@ -14,6 +14,7 @@ import VisionKit
 struct CameraView: View {
     
     @Environment(\.modelContext) private var modelContext
+    @Environment(ThemeManager.self) private var theme
     @State private var viewModel = CameraViewModel()
     @State private var showSettings = false
     
@@ -39,7 +40,11 @@ struct CameraView: View {
                     photoPickerButton
                 }
             }
-            .sheet(isPresented: $showSettings) { SettingsView() }
+            .sheet(isPresented: $showSettings) {
+                SettingsView()
+                    .environment(theme)
+                    .preferredColorScheme(theme.currentTheme.colorScheme)
+            }
             .alert("OCR Result", isPresented: $viewModel.showError) {
                 Button("OK") {}
             } message: {

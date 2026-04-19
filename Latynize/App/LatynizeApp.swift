@@ -12,12 +12,15 @@ import SwiftData
 struct LatynizeApp: App {
     
     @State private var themeManager = ThemeManager.shared
+    @State private var languageManager = LanguageManager.shared
     
     var body: some Scene {
         WindowGroup {
             ContentView()
                 .preferredColorScheme(themeManager.currentTheme.colorScheme)
                 .environment(themeManager)
+                .environment(languageManager)
+                .environment(\.locale, languageManager.locale)
         }
         .modelContainer(for: ConversionRecord.self)
     }

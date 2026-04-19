@@ -12,6 +12,7 @@ import SwiftData
 struct HistoryView: View {
     
     @Environment(\.modelContext) private var modelContext
+    @Environment(ThemeManager.self) private var theme
     @Query(sort: \ConversionRecord.createdAt, order: .reverse)
     private var records: [ConversionRecord]
     
@@ -52,7 +53,11 @@ struct HistoryView: View {
                     }
                 }
             }
-            .sheet(isPresented: $showSettings) { SettingsView() }
+            .sheet(isPresented: $showSettings) {
+                SettingsView()
+                    .environment(theme)
+                    .preferredColorScheme(theme.currentTheme.colorScheme)
+            }
             .alert("Clear all history?", isPresented: $showDeleteAlert) {
                 Button("Cancel", role: .cancel) {}
                 Button("Delete All", role: .destructive) { deleteAll() }
