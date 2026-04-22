@@ -13,245 +13,333 @@ struct HistoryView: View {
     
     @Environment(\.modelContext) private var modelContext
     @Environment(ThemeManager.self) private var theme
+    
     @Query(sort: \ConversionRecord.createdAt, order: .reverse)
-    private var records: [ConversionRecord]
+    private var allRecords: [ConversionRecord]
     
-    @State private var searchText = ""
-    @State private var showSettings = false
-    @State private var showDeleteAlert = false
-    
-    private var filteredRecords: [ConversionRecord] {
-        guard !searchText.isEmpty else { return records }
-        let q = searchText.lowercased()
-        return records.filter {
-            $0.inputText.lowercased().contains(q) || $0.outputText.lowercased().contains(q)
-        }
-    }
+    @State private var viewModel = HistoryViewModel()
+    @State private var selectedRecord: ConversionRecord?
+    @State private var showShareSheet = false
     
     var body: some View {
         NavigationStack {
-            Group {
-                if records.isEmpty {
+            ZStack {
+                Color(uiColor: .systemGroupedBackground)
+                    .ignoresSafeArea()
+                
+                if filteredRecords.isEmpty {
                     emptyState
                 } else {
-                    list
+                    recordsList
                 }
             }
             .navigationTitle("History")
             .navigationBarTitleDisplayMode(.large)
+            .searchable(text: $viewModel.searchText, prompt: Text("Search conversions..."))
             .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button { showSettings = true } label: {
-                        Image(systemName: "gearshape")
-                            .symbolRenderingMode(.hierarchical)
-                    }
-                }
-                if !records.isEmpty {
-                    ToolbarItem(placement: .topBarLeading) {
-                        Button("Clear", role: .destructive) { showDeleteAlert = true }
-                            .font(.system(size: 15))
-                    }
+                if viewModel.isSelecting {
+                    selectionToolbar
+                } else {
+                    standardToolbar
                 }
             }
-            .sheet(isPresented: $showSettings) {
-                SettingsView()
-                    .environment(theme)
-                    .preferredColorScheme(theme.currentTheme.colorScheme)
+            .sheet(item: $selectedRecord) { record in
+                NavigationStack {
+                    DetailView(record: record)
+                }
+                .environment(theme)
+                .preferredColorScheme(theme.currentTheme.colorScheme)
             }
-            .alert("Clear all history?", isPresented: $showDeleteAlert) {
-                Button("Cancel", role: .cancel) {}
-                Button("Delete All", role: .destructive) { deleteAll() }
-            } message: {
-                Text("This action cannot be undone.")
+            .sheet(isPresented: $viewModel.isExportSheetPresented) {
+                ExportOptionsSheet(
+                    availableScopes: availableExportScopes,
+                    totalCount: allRecords.count,
+                    favoritesCount: allRecords.filter { $0.isFavorite }.count,
+                    selectedCount: viewModel.selectedIDs.count,
+                    defaultScope: defaultExportScope
+                ) { scope, format in
+                    viewModel.performExport(
+                        scope: scope,
+                        format: format,
+                        allRecords: allRecords
+                    )
+                    // Delay to allow sheet dismissal animation
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                        showShareSheet = true
+                    }
+                }
+                .environment(theme)
+                .preferredColorScheme(theme.currentTheme.colorScheme)
+            }
+            .sheet(isPresented: $showShareSheet) {
+                if let url = viewModel.exportedFileURL {
+                    ShareSheet(items: [url])
+                }
             }
         }
     }
     
-    // MARK: - List
+    // MARK: - Toolbars
     
-    private var list: some View {
+    @ToolbarContentBuilder
+    private var standardToolbar: some ToolbarContent {
+        ToolbarItem(placement: .topBarLeading) {
+            filterPicker
+        }
+        ToolbarItem(placement: .topBarTrailing) {
+            Menu {
+                Button {
+                    viewModel.toggleSelectionMode()
+                } label: {
+                    Label("Select", systemImage: "checkmark.circle")
+                }
+                .disabled(allRecords.isEmpty)
+                
+                Divider()
+                
+                Button {
+                    viewModel.isExportSheetPresented = true
+                } label: {
+                    Label("Export", systemImage: "square.and.arrow.up")
+                }
+                .disabled(allRecords.isEmpty)
+            } label: {
+                Image(systemName: "ellipsis.circle")
+                    .foregroundStyle(Color.accentTeal)
+            }
+        }
+    }
+    
+    @ToolbarContentBuilder
+    private var selectionToolbar: some ToolbarContent {
+        ToolbarItem(placement: .topBarLeading) {
+            Button("Cancel") {
+                viewModel.toggleSelectionMode()
+            }
+        }
+        ToolbarItem(placement: .principal) {
+            Text("\(viewModel.selectedIDs.count) selected")
+                .font(.system(size: 15, weight: .medium))
+        }
+        ToolbarItem(placement: .topBarTrailing) {
+            Menu {
+                Button {
+                    viewModel.selectAll(filteredRecords)
+                } label: {
+                    Label("Select All", systemImage: "checkmark.circle.fill")
+                }
+                Button {
+                    viewModel.deselectAll()
+                } label: {
+                    Label("Deselect All", systemImage: "circle")
+                }
+                Divider()
+                Button {
+                    viewModel.isExportSheetPresented = true
+                } label: {
+                    Label("Export Selected", systemImage: "square.and.arrow.up")
+                }
+                .disabled(viewModel.selectedIDs.isEmpty)
+            } label: {
+                Image(systemName: "ellipsis.circle")
+                    .foregroundStyle(Color.accentTeal)
+            }
+        }
+    }
+    
+    // MARK: - Computed
+    
+    private var filteredRecords: [ConversionRecord] {
+        viewModel.filteredRecords(from: allRecords)
+    }
+    
+    private var availableExportScopes: [ExportOptionsSheet.Scope] {
+        var scopes: [ExportOptionsSheet.Scope] = [.all, .favorites]
+        if viewModel.isSelecting && !viewModel.selectedIDs.isEmpty {
+            scopes = [.selected, .all, .favorites]
+        }
+        return scopes
+    }
+    
+    private var defaultExportScope: ExportOptionsSheet.Scope {
+        if viewModel.isSelecting && !viewModel.selectedIDs.isEmpty {
+            return .selected
+        }
+        return viewModel.selectedFilter == .favorites ? .favorites : .all
+    }
+    
+    // MARK: - Filter Picker
+    
+    private var filterPicker: some View {
+        Menu {
+            ForEach(HistoryViewModel.Filter.allCases, id: \.self) { filter in
+                Button {
+                    viewModel.selectedFilter = filter
+                } label: {
+                    HStack {
+                        Text(filter.label)
+                        if viewModel.selectedFilter == filter {
+                            Image(systemName: "checkmark")
+                        }
+                    }
+                }
+            }
+        } label: {
+            HStack(spacing: 4) {
+                Image(systemName: viewModel.selectedFilter.icon)
+                    .font(.system(size: 14))
+                Text(viewModel.selectedFilter.label)
+                    .font(.system(size: 15, weight: .medium))
+            }
+            .foregroundStyle(Color.accentTeal)
+        }
+    }
+    
+    // MARK: - Records List
+    
+    private var recordsList: some View {
         List {
             ForEach(filteredRecords) { record in
-                NavigationLink {
-                    DetailView(record: record)
-                } label: {
-                    RecordRow(record: record)
-                }
-                .listRowInsets(EdgeInsets(top: 10, leading: 16, bottom: 10, trailing: 16))
+                recordRow(record)
+                    .listRowBackground(Color.clear)
+                    .listRowSeparator(.hidden)
+                    .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
+                    .swipeActions(edge: .leading, allowsFullSwipe: true) {
+                        Button {
+                            viewModel.toggleFavorite(record, context: modelContext)
+                        } label: {
+                            Label(
+                                record.isFavorite ? "Unfavorite" : "Favorite",
+                                systemImage: record.isFavorite ? "star.slash" : "star.fill"
+                            )
+                        }
+                        .tint(.orange)
+                    }
+                    .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                        Button(role: .destructive) {
+                            viewModel.deleteRecord(record, context: modelContext)
+                        } label: {
+                            Label("Delete", systemImage: "trash")
+                        }
+                    }
             }
-            .onDelete(perform: delete)
         }
         .listStyle(.plain)
-        .searchable(text: $searchText, prompt: "Search conversions...")
+        .scrollContentBackground(.hidden)
+        .animation(.smooth(duration: 0.25), value: viewModel.selectedFilter)
+        .animation(.smooth(duration: 0.25), value: viewModel.searchText)
+        .animation(.smooth(duration: 0.25), value: viewModel.isSelecting)
+    }
+    
+    // MARK: - Record Row
+    
+    private func recordRow(_ record: ConversionRecord) -> some View {
+        Button {
+            if viewModel.isSelecting {
+                viewModel.toggleSelection(record)
+            } else {
+                selectedRecord = record
+            }
+        } label: {
+            HStack(spacing: 12) {
+                // Selection checkbox (only in selection mode)
+                if viewModel.isSelecting {
+                    Image(systemName: viewModel.selectedIDs.contains(record.id) ? "checkmark.circle.fill" : "circle")
+                        .font(.system(size: 20))
+                        .foregroundStyle(viewModel.selectedIDs.contains(record.id) ? Color.accentTeal : Color(uiColor: .tertiaryLabel))
+                        .transition(.scale.combined(with: .opacity))
+                } else {
+                    // Favorite star
+                    Button {
+                        viewModel.toggleFavorite(record, context: modelContext)
+                    } label: {
+                        Image(systemName: record.isFavorite ? "star.fill" : "star")
+                            .font(.system(size: 16))
+                            .foregroundStyle(record.isFavorite ? Color.orange : Color(uiColor: .tertiaryLabel))
+                            .frame(width: 28, height: 28)
+                            .contentShape(Rectangle())
+                    }
+                    .buttonStyle(.plain)
+                }
+                
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(record.inputPreview)
+                        .font(.system(size: 15, weight: .medium))
+                        .foregroundStyle(.primary)
+                        .lineLimit(1)
+                    
+                    Text(record.outputPreview)
+                        .font(.system(size: 14))
+                        .foregroundStyle(Color.accentTeal)
+                        .lineLimit(1)
+                    
+                    HStack(spacing: 4) {
+                        Image(systemName: record.source.icon)
+                            .font(.system(size: 9))
+                        Text(record.createdAt.relativeDisplay)
+                        Text("·")
+                        Text(record.alphabetVersion)
+                    }
+                    .font(.system(size: 11))
+                    .foregroundStyle(.tertiary)
+                }
+                
+                Spacer()
+                
+                if !viewModel.isSelecting {
+                    Image(systemName: "chevron.right")
+                        .font(.system(size: 12, weight: .semibold))
+                        .foregroundStyle(.tertiary)
+                }
+            }
+            .padding(.vertical, 12)
+            .padding(.horizontal, 14)
+            .background(
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(Color(uiColor: .secondarySystemGroupedBackground))
+            )
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
     }
     
     // MARK: - Empty State
     
     private var emptyState: some View {
-        VStack(spacing: 20) {
-            Spacer()
+        VStack(spacing: 12) {
+            Image(systemName: viewModel.selectedFilter == .favorites ? "star" : "clock.arrow.circlepath")
+                .font(.system(size: 48))
+                .foregroundStyle(.quaternary)
             
-            ZStack {
-                Circle()
-                    .fill(Color.accentTeal.opacity(0.08))
-                    .frame(width: 100, height: 100)
-                Image(systemName: "clock")
-                    .font(.system(size: 36, weight: .light))
-                    .foregroundStyle(Color.accentTeal.opacity(0.6))
-            }
-            
-            VStack(spacing: 6) {
-                Text("No conversions yet")
-                    .font(.system(size: 18, weight: .semibold))
-                Text("Convert some text and it will\nautomatically appear here.")
-                    .font(.system(size: 15))
-                    .foregroundStyle(.secondary)
-                    .multilineTextAlignment(.center)
-            }
-            
-            Spacer()
-        }
-    }
-    
-    // MARK: - Actions
-    
-    private func delete(at offsets: IndexSet) {
-        for i in offsets { modelContext.delete(filteredRecords[i]) }
-        HapticService.light()
-    }
-    
-    private func deleteAll() {
-        for r in records { modelContext.delete(r) }
-        HapticService.medium()
-    }
-}
-
-// MARK: - Record Row
-
-struct RecordRow: View {
-    let record: ConversionRecord
-    
-    var body: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            Text(record.inputPreview)
-                .font(.system(size: 15, weight: .medium))
-                .lineLimit(1)
-            
-            HStack(spacing: 5) {
-                Image(systemName: "arrow.right")
-                    .font(.system(size: 10))
-                    .foregroundStyle(Color.accentTeal)
-                Text(record.outputPreview)
-                    .font(.system(size: 14))
-                    .foregroundStyle(.secondary)
-                    .lineLimit(1)
-            }
-            
-            HStack(spacing: 6) {
-                Image(systemName: record.source.icon)
-                Text(record.source.rawValue.capitalized)
-                Text("·")
-                Text(record.createdAt.relativeDisplay)
-                Text("·")
-                Text(record.alphabetVersion)
-            }
-            .font(.system(size: 11))
-            .foregroundStyle(.tertiary)
-        }
-    }
-}
-
-// MARK: - Detail View
-
-struct DetailView: View {
-    let record: ConversionRecord
-    
-    var body: some View {
-        ScrollView {
-            VStack(spacing: 20) {
-                textBlock(label: "Original", text: record.inputText, icon: "text.alignleft")
-                textBlock(label: "Converted", text: record.outputText, icon: "text.badge.checkmark")
-                infoSection
-            }
-            .padding(16)
-        }
-        .background(Color(uiColor: .systemGroupedBackground))
-        .navigationTitle("Details")
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                ShareLink(item: record.outputText) {
-                    Image(systemName: "square.and.arrow.up")
-                }
-            }
-        }
-    }
-    
-    private func textBlock(label: String, text: String, icon: String) -> some View {
-        VStack(alignment: .leading, spacing: 10) {
-            HStack(spacing: 6) {
-                Image(systemName: icon)
-                    .font(.system(size: 12))
-                    .foregroundStyle(Color.accentTeal)
-                Text(label)
-                    .font(.system(size: 13, weight: .medium))
-                    .foregroundStyle(.secondary)
-            }
-            
-            Text(text)
-                .font(.system(size: 16))
-                .textSelection(.enabled)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(14)
-                .background(
-                    RoundedRectangle(cornerRadius: 12)
-                        .fill(Color(uiColor: .secondarySystemGroupedBackground))
-                )
-            
-            Button {
-                UIPasteboard.general.string = text
-                HapticService.success()
-            } label: {
-                HStack(spacing: 5) {
-                    Image(systemName: "doc.on.doc").font(.system(size: 11))
-                    Text("Copy").font(.system(size: 13, weight: .medium))
-                }
-                .foregroundStyle(Color.accentTeal)
-            }
-        }
-    }
-    
-    private var infoSection: some View {
-        VStack(spacing: 0) {
-            infoRow("Direction", record.direction.label)
-            Divider().padding(.leading, 16)
-            infoRow("Source", record.source.rawValue.capitalized)
-            Divider().padding(.leading, 16)
-            infoRow("Standard", record.alphabetVersion == "2021" ? "Standard 2021" : "Legacy 2018")
-            Divider().padding(.leading, 16)
-            infoRow("Date", record.createdAt.formatted(date: .long, time: .shortened))
-        }
-        .background(
-            RoundedRectangle(cornerRadius: 12)
-                .fill(Color(uiColor: .secondarySystemGroupedBackground))
-        )
-    }
-    
-    private func infoRow(_ label: String, _ value: String) -> some View {
-        HStack {
-            Text(label)
-                .font(.system(size: 15))
-            Spacer()
-            Text(value)
-                .font(.system(size: 15))
+            Text(viewModel.selectedFilter == .favorites ? "No favorites yet" : "No conversions yet")
+                .font(.system(size: 17, weight: .semibold))
                 .foregroundStyle(.secondary)
+            
+            Text(viewModel.selectedFilter == .favorites
+                 ? "Tap the star on any conversion to save it here."
+                 : "Convert some text and it will\nautomatically appear here.")
+                .font(.system(size: 14))
+                .foregroundStyle(.tertiary)
+                .multilineTextAlignment(.center)
         }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 12)
+        .padding(.horizontal, 40)
     }
+}
+
+// MARK: - Share Sheet wrapper
+
+struct ShareSheet: UIViewControllerRepresentable {
+    let items: [Any]
+    
+    func makeUIViewController(context: Context) -> UIActivityViewController {
+        UIActivityViewController(activityItems: items, applicationActivities: nil)
+    }
+    
+    func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
 }
 
 #Preview {
     HistoryView()
         .modelContainer(for: ConversionRecord.self, inMemory: true)
+        .environment(ThemeManager.shared)
 }

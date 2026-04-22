@@ -15,13 +15,12 @@ final class ConversionRecord {
     var inputText: String
     var outputText: String
     
-    /// Stored as raw string for SwiftData compatibility
     private var directionRaw: String
     private var sourceRaw: String
     
     var alphabetVersion: String
     var createdAt: Date
-    var isFavorite: Bool
+    var isFavorite: Bool = false
     
     // MARK: - Computed Properties
     

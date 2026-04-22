@@ -11,7 +11,7 @@ import SwiftUI
 enum AppTheme: String, CaseIterable {
     case system, light, dark
     
-    var label: String {
+    var label: LocalizedStringKey {
         switch self {
         case .system: return "System"
         case .light:  return "Light"

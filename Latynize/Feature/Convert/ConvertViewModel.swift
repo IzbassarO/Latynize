@@ -38,6 +38,7 @@ final class ConvertViewModel {
         guard hasInput else { return 0 }
         return outputText.split(separator: " ").count
     }
+    var isCurrentFavorited: Bool = false
     
     // MARK: - Example phrases
     
@@ -106,6 +107,7 @@ final class ConvertViewModel {
             try? await Task.sleep(for: .milliseconds(80))
             guard !Task.isCancelled else { return }
             performConversion()
+            isCurrentFavorited = false
         }
     }
     
@@ -179,5 +181,42 @@ final class ConvertViewModel {
         }
         let result = engine.convert(inputText, direction: direction, mappingID: selectedMappingID)
         outputText = result.output
+    }
+    
+    func toggleCurrentFavorite(context: ModelContext) {
+        guard hasInput, !outputText.isEmpty else { return }
+        
+        let currentInput = inputText
+        let currentOutput = outputText
+        
+        let predicate = #Predicate<ConversionRecord> { record in
+            record.inputText == currentInput &&
+            record.outputText == currentOutput
+        }
+        
+        let descriptor = FetchDescriptor<ConversionRecord>(predicate: predicate)
+        
+        do {
+            if let existing = try context.fetch(descriptor).first {
+                existing.isFavorite.toggle()
+                isCurrentFavorited = existing.isFavorite
+            } else {
+                let record = ConversionRecord(
+                    inputText: inputText,
+                    outputText: outputText,
+                    direction: direction,
+                    source: .text,
+                    alphabetVersion: selectedMappingID,
+                    isFavorite: true
+                )
+                context.insert(record)
+                isCurrentFavorited = true
+            }
+            
+            try context.save()
+            HapticService.success()
+        } catch {
+            print("Failed to toggle favorite: \(error)")
+        }
     }
 }

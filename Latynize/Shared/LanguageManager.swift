@@ -11,12 +11,12 @@ import SwiftUI
 enum AppLanguage: String, CaseIterable {
     case system, en, ru, kk
     
-    var label: String {
+    var label: LocalizedStringKey {
         switch self {
-        case .system: return String(localized: "System")
+        case .system: return "System"
         case .en:     return "English"
-        case .ru:     return "Русский"
-        case .kk:     return "Қазақша"
+        case .ru:     return "Russian"
+        case .kk:     return "Kazakh"
         }
     }
     

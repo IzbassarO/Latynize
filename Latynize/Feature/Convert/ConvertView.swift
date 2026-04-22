@@ -303,6 +303,16 @@ struct ConvertView: View {
                 HStack(spacing: 10) {
                     Spacer()
                     
+                    Button {
+                        viewModel.toggleCurrentFavorite(context: modelContext)
+                    } label: {
+                        Image(systemName: viewModel.isCurrentFavorited ? "heart.fill" : "heart")
+                            .font(.system(size: 14))
+                            .foregroundStyle(viewModel.isCurrentFavorited ? .red : .secondary)
+                            .frame(width: 36, height: 36)
+                            .background(Color(uiColor: .tertiarySystemFill), in: Circle())
+                    }
+                    
                     Button { viewModel.copyOutput() } label: {
                         HStack(spacing: 5) {
                             Image(systemName: "doc.on.doc").font(.system(size: 12))
