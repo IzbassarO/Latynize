@@ -12,7 +12,7 @@ import SwiftUI
 @Observable
 final class HistoryViewModel {
     
-    // MARK: - State
+    // MARK: - Filter
     
     enum Filter: String, CaseIterable {
         case all, favorites
@@ -32,24 +32,28 @@ final class HistoryViewModel {
         }
     }
     
+    // MARK: - State
+    
     var selectedFilter: Filter = .all
     var searchText: String = ""
     
     var isSelecting: Bool = false
     var selectedIDs: Set<UUID> = []
-    var exportedFileURL: URL?
-    var isExportSheetPresented: Bool = false
     
-    // MARK: - Actions
+    var isExportSheetPresented: Bool = false
+    var exportedFileURL: URL?
+    
+    // Context for the currently active export flow
+    var exportScope: ExportOptionsSheet.Scope = .all
+    
+    // MARK: - Favorites / Delete
     
     func toggleFavorite(_ record: ConversionRecord, context: ModelContext) {
         record.isFavorite.toggle()
-        
         do {
             try context.save()
             HapticService.selection()
         } catch {
-            // Revert on failure
             record.isFavorite.toggle()
             print("Failed to toggle favorite: \(error)")
         }
@@ -70,7 +74,7 @@ final class HistoryViewModel {
         HapticService.success()
     }
     
-    // MARK: - Filtering Logic (pure functions, fast)
+    // MARK: - Filtering
     
     func filteredRecords(from records: [ConversionRecord]) -> [ConversionRecord] {
         var result = records
@@ -87,7 +91,7 @@ final class HistoryViewModel {
             }
         }
         
-        // Sort: favorites first, then by date
+        // Favorites first, then newest
         result.sort { lhs, rhs in
             if lhs.isFavorite != rhs.isFavorite {
                 return lhs.isFavorite && !rhs.isFavorite
@@ -98,6 +102,8 @@ final class HistoryViewModel {
         return result
     }
     
+    // MARK: - Selection Mode
+    
     func toggleSelectionMode() {
         withAnimation(.smooth(duration: 0.25)) {
             isSelecting.toggle()
@@ -106,7 +112,7 @@ final class HistoryViewModel {
             }
         }
     }
-
+    
     func toggleSelection(_ record: ConversionRecord) {
         if selectedIDs.contains(record.id) {
             selectedIDs.remove(record.id)
@@ -115,38 +121,63 @@ final class HistoryViewModel {
         }
         HapticService.selection()
     }
-
+    
     func selectAll(_ records: [ConversionRecord]) {
         selectedIDs = Set(records.map { $0.id })
         HapticService.selection()
     }
-
+    
     func deselectAll() {
         selectedIDs.removeAll()
         HapticService.selection()
     }
     
-    func performExport(
-        scope: ExportOptionsSheet.Scope,
-        format: ExportOptionsSheet.Format,
-        allRecords: [ConversionRecord]
-    ) {
-        let records: [ConversionRecord]
-        let title: String
-        
-        switch scope {
+    // MARK: - Export Prep
+    
+    /// Opens export sheet for a specific scope (triggered from toolbar menu)
+    func prepareExport(scope: ExportOptionsSheet.Scope) {
+        self.exportScope = scope
+        self.isExportSheetPresented = true
+    }
+    
+    /// Returns records matching the current exportScope
+    func resolvedRecords(from allRecords: [ConversionRecord]) -> [ConversionRecord] {
+        switch exportScope {
         case .all:
-            records = allRecords
-            title = "All Conversions"
+            return allRecords
         case .favorites:
-            records = allRecords.filter { $0.isFavorite }
-            title = "Favorites"
+            return allRecords.filter { $0.isFavorite }
         case .selected:
-            records = allRecords.filter { selectedIDs.contains($0.id) }
-            title = "Selected"
+            return allRecords.filter { selectedIDs.contains($0.id) }
+        case .single:
+            return []  // not used in HistoryView
         }
+    }
+    
+    /// Human-readable context title for the current scope
+    func contextTitle(for records: [ConversionRecord]) -> LocalizedStringKey {
+        switch exportScope {
+        case .all:       return "All Conversions"
+        case .favorites: return "Favorites"
+        case .selected:  return "Selected Conversions"
+        case .single:    return "This Conversion"
+        }
+    }
+    
+    // MARK: - Execute Export
+    
+    func performExport(format: ExportOptionsSheet.Format, allRecords: [ConversionRecord]) {
+        let records = resolvedRecords(from: allRecords)
         
         guard !records.isEmpty else { return }
+        
+        let title: String
+        switch exportScope {
+        case .all:       title = "All Conversions"
+        case .favorites: title = "Favorites"
+        case .selected:  title = "Selected Conversions"
+        case .single:    title = "Conversion"
+        }
         
         let url: URL?
         switch format {

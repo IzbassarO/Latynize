@@ -8,9 +8,10 @@
 import Foundation
 import SwiftUI
 
-
 struct DetailView: View {
+    
     let record: ConversionRecord
+    
     @Environment(\.dismiss) private var dismiss
     @Environment(ThemeManager.self) private var theme
     
@@ -51,14 +52,11 @@ struct DetailView: View {
         }
         .sheet(isPresented: $isExportSheetPresented) {
             ExportOptionsSheet(
-                availableScopes: [],  // single record, no scope picker
-                totalCount: 1,
-                favoritesCount: record.isFavorite ? 1 : 0,
-                selectedCount: 0,
-                defaultScope: .all
-            ) { _, format in
+                contextTitle: "This Conversion",
+                itemCount: 1
+            ) { format in
                 performExport(format: format)
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
                     showShareSheet = true
                 }
             }
@@ -71,6 +69,8 @@ struct DetailView: View {
             }
         }
     }
+    
+    // MARK: - Content blocks
     
     private func textBlock(label: LocalizedStringKey, text: String, icon: String) -> some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -134,6 +134,8 @@ struct DetailView: View {
         .padding(.horizontal, 16)
         .padding(.vertical, 12)
     }
+    
+    // MARK: - Export
     
     private func performExport(format: ExportOptionsSheet.Format) {
         switch format {

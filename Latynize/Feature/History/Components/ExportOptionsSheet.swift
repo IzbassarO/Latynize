@@ -10,26 +10,7 @@ import SwiftUI
 
 struct ExportOptionsSheet: View {
     
-    enum Scope: String, CaseIterable, Identifiable {
-        case all, favorites, selected
-        var id: String { rawValue }
-        
-        var label: LocalizedStringKey {
-            switch self {
-            case .all:       return "All conversions"
-            case .favorites: return "Favorites only"
-            case .selected:  return "Selected items"
-            }
-        }
-        
-        var icon: String {
-            switch self {
-            case .all:       return "list.bullet"
-            case .favorites: return "star.fill"
-            case .selected:  return "checkmark.circle"
-            }
-        }
-    }
+    // MARK: - Format
     
     enum Format: String, CaseIterable, Identifiable {
         case pdf, text
@@ -57,44 +38,27 @@ struct ExportOptionsSheet: View {
         }
     }
     
+    // MARK: - Scope (used only by ViewModels — not for UI picking)
+    
+    enum Scope: String {
+        case all, favorites, selected, single
+    }
+    
     // MARK: - Config
     
-    let availableScopes: [Scope]
-    let totalCount: Int
-    let favoritesCount: Int
-    let selectedCount: Int
+    let contextTitle: LocalizedStringKey
+    let itemCount: Int
+    let onExport: (Format) -> Void
     
-    @State private var selectedScope: Scope
     @State private var selectedFormat: Format = .pdf
-    
-    let onExport: (Scope, Format) -> Void
-    
     @Environment(\.dismiss) private var dismiss
-    
-    init(
-        availableScopes: [Scope],
-        totalCount: Int,
-        favoritesCount: Int = 0,
-        selectedCount: Int = 0,
-        defaultScope: Scope = .all,
-        onExport: @escaping (Scope, Format) -> Void
-    ) {
-        self.availableScopes = availableScopes
-        self.totalCount = totalCount
-        self.favoritesCount = favoritesCount
-        self.selectedCount = selectedCount
-        self._selectedScope = State(initialValue: defaultScope)
-        self.onExport = onExport
-    }
     
     // MARK: - Body
     
     var body: some View {
         NavigationStack {
             Form {
-                if availableScopes.count > 1 {
-                    scopeSection
-                }
+                contextSection
                 formatSection
             }
             .navigationTitle("Export")
@@ -105,11 +69,11 @@ struct ExportOptionsSheet: View {
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Export") {
-                        onExport(selectedScope, selectedFormat)
+                        onExport(selectedFormat)
                         dismiss()
                     }
                     .fontWeight(.semibold)
-                    .disabled(countForScope(selectedScope) == 0)
+                    .disabled(itemCount == 0)
                 }
             }
             .presentationDetents([.medium])
@@ -117,48 +81,37 @@ struct ExportOptionsSheet: View {
         }
     }
     
-    // MARK: - Scope Section
+    // MARK: - Context Section
     
-    private var scopeSection: some View {
+    private var contextSection: some View {
         Section {
-            ForEach(availableScopes) { scope in
-                Button {
-                    withAnimation(.smooth(duration: 0.2)) {
-                        selectedScope = scope
-                    }
-                    HapticService.selection()
-                } label: {
-                    HStack(spacing: 12) {
-                        Image(systemName: scope.icon)
-                            .font(.system(size: 15))
-                            .foregroundStyle(selectedScope == scope ? Color.accentTeal : .secondary)
-                            .frame(width: 24)
-                        
-                        VStack(alignment: .leading, spacing: 2) {
-                            Text(scope.label)
-                                .font(.system(size: 15))
-                                .foregroundStyle(.primary)
-                            Text(countText(for: scope))
-                                .font(.system(size: 12))
-                                .foregroundStyle(.secondary)
-                        }
-                        
-                        Spacer()
-                        
-                        if selectedScope == scope {
-                            Image(systemName: "checkmark")
-                                .font(.system(size: 14, weight: .semibold))
-                                .foregroundStyle(Color.accentTeal)
-                        }
-                    }
-                    .contentShape(Rectangle())
+            HStack(spacing: 12) {
+                Image(systemName: "tray.and.arrow.up")
+                    .font(.system(size: 20))
+                    .foregroundStyle(Color.accentTeal)
+                    .frame(width: 40, height: 40)
+                    .background(Color.accentTeal.opacity(0.12), in: Circle())
+                
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(contextTitle)
+                        .font(.system(size: 15, weight: .medium))
+                        .foregroundStyle(.primary)
+                    Text(itemCountText)
+                        .font(.system(size: 13))
+                        .foregroundStyle(.secondary)
                 }
-                .buttonStyle(.plain)
-                .disabled(countForScope(scope) == 0)
+                
+                Spacer()
             }
-        } header: {
-            Text("What to export")
+            .padding(.vertical, 4)
         }
+    }
+    
+    private var itemCountText: LocalizedStringKey {
+        if itemCount == 1 {
+            return "1 conversion"
+        }
+        return "\(itemCount) conversions"
     }
     
     // MARK: - Format Section
@@ -202,20 +155,5 @@ struct ExportOptionsSheet: View {
         } header: {
             Text("Format")
         }
-    }
-    
-    // MARK: - Helpers
-    
-    private func countForScope(_ scope: Scope) -> Int {
-        switch scope {
-        case .all:       return totalCount
-        case .favorites: return favoritesCount
-        case .selected:  return selectedCount
-        }
-    }
-    
-    private func countText(for scope: Scope) -> String {
-        let count = countForScope(scope)
-        return "\(count) " + (count == 1 ? "item" : "items")
     }
 }

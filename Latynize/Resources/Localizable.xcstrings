@@ -745,6 +745,22 @@
         }
       }
     },
+    "Export this conversion as a formatted document." : {
+      "localizations" : {
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Бұл түрлендіруді пішімделген құжат ретінде экспорттаңыз."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Экспортируйте результаты преобразования в отформатированный документ."
+          }
+        }
+      }
+    },
     "Favorite" : {
       "localizations" : {
         "kk" : {

@@ -52,21 +52,11 @@ struct HistoryView: View {
             }
             .sheet(isPresented: $viewModel.isExportSheetPresented) {
                 ExportOptionsSheet(
-                    availableScopes: availableExportScopes,
-                    totalCount: allRecords.count,
-                    favoritesCount: allRecords.filter { $0.isFavorite }.count,
-                    selectedCount: viewModel.selectedIDs.count,
-                    defaultScope: defaultExportScope
-                ) { scope, format in
-                    viewModel.performExport(
-                        scope: scope,
-                        format: format,
-                        allRecords: allRecords
-                    )
-                    // Delay to allow sheet dismissal animation
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                        showShareSheet = true
-                    }
+                    contextTitle: viewModel.contextTitle(for: allRecords),
+                    itemCount: viewModel.resolvedRecords(from: allRecords).count
+                ) { format in
+                    viewModel.performExport(format: format, allRecords: allRecords)
+                    scheduleShareSheet()
                 }
                 .environment(theme)
                 .preferredColorScheme(theme.currentTheme.colorScheme)
@@ -76,6 +66,18 @@ struct HistoryView: View {
                     ShareSheet(items: [url])
                 }
             }
+        }
+    }
+    
+    // MARK: - Helpers
+    
+    private var favoritesCount: Int {
+        allRecords.filter { $0.isFavorite }.count
+    }
+    
+    private func scheduleShareSheet() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+            showShareSheet = true
         }
     }
     
@@ -89,18 +91,25 @@ struct HistoryView: View {
         ToolbarItem(placement: .topBarTrailing) {
             Menu {
                 Button {
-                    viewModel.toggleSelectionMode()
+                    viewModel.prepareExport(scope: .all)
                 } label: {
-                    Label("Select", systemImage: "checkmark.circle")
+                    Label("Export All", systemImage: "tray.and.arrow.up")
                 }
                 .disabled(allRecords.isEmpty)
+                
+                Button {
+                    viewModel.prepareExport(scope: .favorites)
+                } label: {
+                    Label("Export Favorites", systemImage: "star")
+                }
+                .disabled(favoritesCount == 0)
                 
                 Divider()
                 
                 Button {
-                    viewModel.isExportSheetPresented = true
+                    viewModel.toggleSelectionMode()
                 } label: {
-                    Label("Export", systemImage: "square.and.arrow.up")
+                    Label("Select to Export", systemImage: "checkmark.circle")
                 }
                 .disabled(allRecords.isEmpty)
             } label: {
@@ -135,9 +144,9 @@ struct HistoryView: View {
                 }
                 Divider()
                 Button {
-                    viewModel.isExportSheetPresented = true
+                    viewModel.prepareExport(scope: .selected)
                 } label: {
-                    Label("Export Selected", systemImage: "square.and.arrow.up")
+                    Label("Export Selected", systemImage: "tray.and.arrow.up")
                 }
                 .disabled(viewModel.selectedIDs.isEmpty)
             } label: {
@@ -151,21 +160,6 @@ struct HistoryView: View {
     
     private var filteredRecords: [ConversionRecord] {
         viewModel.filteredRecords(from: allRecords)
-    }
-    
-    private var availableExportScopes: [ExportOptionsSheet.Scope] {
-        var scopes: [ExportOptionsSheet.Scope] = [.all, .favorites]
-        if viewModel.isSelecting && !viewModel.selectedIDs.isEmpty {
-            scopes = [.selected, .all, .favorites]
-        }
-        return scopes
-    }
-    
-    private var defaultExportScope: ExportOptionsSheet.Scope {
-        if viewModel.isSelecting && !viewModel.selectedIDs.isEmpty {
-            return .selected
-        }
-        return viewModel.selectedFilter == .favorites ? .favorites : .all
     }
     
     // MARK: - Filter Picker
@@ -242,14 +236,12 @@ struct HistoryView: View {
             }
         } label: {
             HStack(spacing: 12) {
-                // Selection checkbox (only in selection mode)
                 if viewModel.isSelecting {
                     Image(systemName: viewModel.selectedIDs.contains(record.id) ? "checkmark.circle.fill" : "circle")
                         .font(.system(size: 20))
                         .foregroundStyle(viewModel.selectedIDs.contains(record.id) ? Color.accentTeal : Color(uiColor: .tertiaryLabel))
                         .transition(.scale.combined(with: .opacity))
                 } else {
-                    // Favorite star
                     Button {
                         viewModel.toggleFavorite(record, context: modelContext)
                     } label: {
