@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import SwiftData
+import StoreKit
 
 struct SettingsView: View {
     
@@ -23,6 +24,11 @@ struct SettingsView: View {
     
     @State private var showClearAlert = false
     @State private var showAlphabetInfo = false
+    @State private var showFeedbackMail = false
+    @State private var showShareSheet = false
+
+    private let appStoreURL = "https://apps.apple.com/app/id6741234567"  // ← замени на реальный после publish
+    private let feedbackEmail = "izbassar.eng@gmail.com"
     
     private let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0"
     private let buildNumber = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "1"
@@ -35,26 +41,6 @@ struct SettingsView: View {
                 languageSection
                 preferencesSection
                 dataSection
-#if DEBUG
-Section {
-    Button("Simulate v1 user") {
-        UserDefaults.standard.set("1.0.0", forKey: "WhatsNew.lastSeenVersion")
-        UserDefaults.standard.set(true, forKey: "WhatsNew.hasLaunchedBefore")
-        HapticService.success()
-    }
-    
-    Button("Reset What's New") {
-        UserDefaults.standard.removeObject(forKey: "WhatsNew.lastSeenVersion")
-        UserDefaults.standard.removeObject(forKey: "WhatsNew.hasLaunchedBefore")
-        HapticService.success()
-    }
-} header: {
-    Text("DEBUG")
-} footer: {
-    Text("After tapping, fully close the app (swipe up from app switcher) and reopen.")
-        .font(.system(size: 11))
-}
-#endif
                 aboutSection
             }
             .navigationTitle("Settings")
@@ -252,33 +238,88 @@ Section {
         
     private var aboutSection: some View {
         Section {
-            HStack {
-                Text("Version")
-                    .font(.system(size: 15))
-                Spacer()
-                Text("\(appVersion) (\(buildNumber))")
-                    .font(.system(size: 15))
-                    .foregroundStyle(.secondary)
+            // Rate the app
+            Button {
+                requestReview()
+            } label: {
+                HStack {
+                    Image(systemName: "star.fill")
+                        .foregroundStyle(.orange)
+                        .frame(width: 24)
+                    Text("Rate Latynize")
+                        .foregroundStyle(.primary)
+                        .font(.system(size: 15))
+                    Spacer()
+                    Image(systemName: "chevron.right")
+                        .font(.system(size: 12, weight: .semibold))
+                        .foregroundStyle(.tertiary)
+                }
             }
             
+            // Share the app
+            ShareLink(
+                item: URL(string: appStoreURL)!,
+                subject: Text("Latynize"),
+                message: Text("Check out Latynize — Kazakh script converter")
+            ) {
+                HStack {
+                    Image(systemName: "square.and.arrow.up")
+                        .foregroundStyle(Color.accentTeal)
+                        .frame(width: 24)
+                    Text("Share Latynize")
+                        .foregroundStyle(.primary)
+                        .font(.system(size: 15))
+                    Spacer()
+                    Image(systemName: "chevron.right")
+                        .font(.system(size: 12, weight: .semibold))
+                        .foregroundStyle(.tertiary)
+                }
+            }
+            
+            // Privacy Policy
             Link(destination: URL(string: "https://izbassar.dev/privacy")!) {
                 HStack {
+                    Image(systemName: "lock.shield.fill")
+                        .foregroundStyle(.gray)
+                        .frame(width: 24)
                     Text("Privacy Policy")
-                        .font(.system(size: 15))
                         .foregroundStyle(.primary)
+                        .font(.system(size: 15))
                     Spacer()
                     Image(systemName: "arrow.up.right")
                         .font(.system(size: 11))
                         .foregroundStyle(.tertiary)
                 }
             }
+            
+            // Version (read-only)
+            HStack {
+                Image(systemName: "info.circle")
+                    .foregroundStyle(.gray)
+                    .frame(width: 24)
+                Text("Version")
+                    .font(.system(size: 15))
+                Spacer()
+                Text("\(appVersion) (\(buildNumber))")
+                    .font(.system(size: 14))
+                    .foregroundStyle(.secondary)
+                    .monospacedDigit()
+            }
+            
         } header: {
             Text("About")
         } footer: {
-            Text("Latynize — Kazakh Script Converter\nAll processing happens on-device. No data leaves your phone.")
-                .multilineTextAlignment(.center)
-                .frame(maxWidth: .infinity)
-                .padding(.top, 16)
+            VStack(spacing: 6) {
+                Text("Made with care for Kazakhstan")
+                    .font(.system(size: 12, weight: .medium))
+                    .foregroundStyle(.secondary)
+                Text("All processing happens on-device. No data leaves your phone.")
+                    .font(.system(size: 11))
+                    .foregroundStyle(.tertiary)
+                    .multilineTextAlignment(.center)
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.top, 16)
         }
     }
     
@@ -360,6 +401,42 @@ Section {
             RoundedRectangle(cornerRadius: 14)
                 .fill(Color(uiColor: .secondarySystemGroupedBackground))
         )
+    }
+    
+    // MARK: - About Actions
+
+    private func requestReview() {
+        HapticService.light()
+        
+        // Use SKStoreReviewController for in-app review prompt
+        if let scene = UIApplication.shared.connectedScenes.first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene {
+            AppStore.requestReview(in: scene)
+        }
+    }
+
+    private func sendFeedback() {
+        HapticService.light()
+        
+        let subject = "Latynize Feedback (v\(appVersion))"
+        let body = """
+        
+        
+        ---
+        App: Latynize
+        Version: \(appVersion) (\(buildNumber))
+        Device: \(UIDevice.current.model)
+        iOS: \(UIDevice.current.systemVersion)
+        Language: \(language.currentLanguage.rawValue)
+        """
+        
+        let encodedSubject = subject.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+        let encodedBody = body.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+        
+        if let url = URL(string: "mailto:\(feedbackEmail)?subject=\(encodedSubject)&body=\(encodedBody)") {
+            if UIApplication.shared.canOpenURL(url) {
+                UIApplication.shared.open(url)
+            }
+        }
     }
     
     private func clearHistory() {

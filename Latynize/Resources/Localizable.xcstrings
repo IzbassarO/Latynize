@@ -151,6 +151,9 @@
         }
       }
     },
+    "2.0" : {
+
+    },
     "2018" : {
       "localizations" : {
         "kk" : {
@@ -199,8 +202,21 @@
         }
       }
     },
-    "After tapping, fully close the app (swipe up from app switcher) and reopen." : {
-
+    "After tapping, fully close the app and reopen." : {
+      "localizations" : {
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Түрткеннен кейін қолданбаны толығымен жауып, қайта ашыңыз."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "После нажатия полностью закройте приложение и откройте его снова."
+          }
+        }
+      }
     },
     "All" : {
       "localizations" : {
@@ -247,6 +263,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Все конверсии"
+          }
+        }
+      }
+    },
+    "All processing happens on-device. No data leaves your phone." : {
+      "localizations" : {
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Барлық өңдеу құрылғыда жүреді. Деректер телефоныңыздан шықпайды."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вся обработка происходит на устройстве. Данные не покидают ваш телефон."
           }
         }
       }
@@ -395,6 +427,16 @@
         }
       }
     },
+    "Check out Latynize — Kazakh script converter" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Посмотри Latynize — конвертер казахской письменности"
+          }
+        }
+      }
+    },
     "Choose Photo" : {
       "localizations" : {
         "kk" : {
@@ -528,29 +570,13 @@
         "kk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Мәтінді түрлендіріңіз, ол\\nосы жерде пайда болады."
+            "value" : "Мәтінді түрлендіріңіз, ол\nосы жерде пайда болады."
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Конвертируйте текст и он\\nпоявится здесь."
-          }
-        }
-      }
-    },
-    "Convert text from any app — Safari, Mail, Messages, and more." : {
-      "localizations" : {
-        "kk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Кез келген қолданбадан мәтінді түрлендіріңіз — Safari, Mail, Хабарлар және басқалары."
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Конвертируйте текст из любого приложения — Safari, Mail, Сообщения и других."
+            "value" : "Конвертируйте текст и он\nпоявится здесь."
           }
         }
       }
@@ -719,23 +745,6 @@
         }
       }
     },
-    "Delete All" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "kk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Барлығын жою"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Удалить всё"
-          }
-        }
-      }
-    },
     "Deselect All" : {
       "localizations" : {
         "kk" : {
@@ -812,23 +821,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Английский"
-          }
-        }
-      }
-    },
-    "Example" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "kk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Мысал"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Пример"
           }
         }
       }
@@ -913,23 +905,6 @@
         }
       }
     },
-    "Export this conversion as a formatted document." : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "kk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Бұл түрлендіруді пішімделген құжат ретінде экспорттаңыз."
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Экспортируйте результаты преобразования в отформатированный документ."
-          }
-        }
-      }
-    },
     "Export to PDF" : {
       "localizations" : {
         "kk" : {
@@ -978,19 +953,18 @@
         }
       }
     },
-    "Favorites only" : {
-      "extractionState" : "stale",
+    "Follows your system theme — or pick your own." : {
       "localizations" : {
         "kk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Тек таңдаулылар"
+            "value" : "Жүйе тақырыбыңызды бақылайды немесе өзіңізді таңдаңыз."
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Только избранные"
+            "value" : "Соответствует вашей системной теме оформления — или выберите свою собственную."
           }
         }
       }
@@ -1187,71 +1161,6 @@
         }
       }
     },
-    "Latynize — Kazakh Script Converter\nAll processing happens on-device. No data leaves your phone." : {
-      "localizations" : {
-        "kk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Latynize — Қазақ жазуын түрлендіруші\nБарлығы құрылғыда өңделеді. Деректер жіберілмейді."
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Latynize — Конвертер казахской письменности\nВсё обрабатывается на устройстве. Данные не передаются."
-          }
-        }
-      }
-    },
-    "Latynize 2.0" : {
-      "localizations" : {
-        "kk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Latynize 2.0"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Latynize 2.0"
-          }
-        }
-      }
-    },
-    "Latynize now follows your system theme — or pick your favorite." : {
-      "localizations" : {
-        "kk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Latynize енді жүйелік тақырыпты ұстанады — немесе өзіңізге ұнайтынды таңдаңыз."
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Latynize теперь следует системной теме — или выберите свою."
-          }
-        }
-      }
-    },
-    "Learn Kazakh Latin letters daily." : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "kk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Қазақ латын әріптерін күн сайын үйреніңіз."
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Изучайте казахские латинские буквы каждый день."
-          }
-        }
-      }
-    },
     "Learn one Kazakh Latin letter every day with examples." : {
       "localizations" : {
         "kk" : {
@@ -1264,6 +1173,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Изучайте по одной казахской латинской букве каждый день с примерами."
+          }
+        }
+      }
+    },
+    "Learn one Kazakh letter every day." : {
+      "localizations" : {
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Күн сайын бір қазақ әріпін үйрен."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Изучайте по одной казахской букве каждый день."
           }
         }
       }
@@ -1409,6 +1334,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Сканирование доступно на устройстве.\\nВыберите фото для распознавания текста."
+          }
+        }
+      }
+    },
+    "Made with care for Kazakhstan" : {
+      "localizations" : {
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Қазақстан үшін қамқорлықпен жасалған"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сделано с заботой для Казахстана"
           }
         }
       }
@@ -1605,6 +1546,22 @@
         }
       }
     },
+    "Rate Latynize" : {
+      "localizations" : {
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Latynize-ты бағалау"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Оценить Latynize"
+          }
+        }
+      }
+    },
     "Recognized" : {
       "localizations" : {
         "kk" : {
@@ -1638,7 +1595,20 @@
       }
     },
     "Reset What's New" : {
-
+      "localizations" : {
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Жаңалықтарды қалпына келтіріңіз"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сбросить настройки \"Что нового\""
+          }
+        }
+      }
     },
     "Russian" : {
       "localizations" : {
@@ -1704,18 +1674,18 @@
         }
       }
     },
-    "Save your most-used conversions for quick access." : {
+    "Save your most-used conversions." : {
       "localizations" : {
         "kk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Жиі қолданылатын түрлендірулерді жылдам қол жеткізу үшін сақтаңыз."
+            "value" : "Ең жиі қолданылатын түрлендірулерді сақтаңыз."
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Сохраняйте часто используемые конверсии для быстрого доступа."
+            "value" : "Сохраните наиболее часто используемые конверсии."
           }
         }
       }
@@ -1784,35 +1754,18 @@
         }
       }
     },
-    "See today's letter right on your home screen." : {
+    "See today's letter on your home screen." : {
       "localizations" : {
         "kk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Күннің әрпін басты экранда көріңіз."
+            "value" : "Негізгі экранда бүгінгі хатты қараңыз."
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Видите букву дня прямо на главном экране."
-          }
-        }
-      }
-    },
-    "Select" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "kk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Таңдау"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Выбрать"
+            "value" : "Сегодняшнее письмо вы найдете на главном экране."
           }
         }
       }
@@ -1865,19 +1818,19 @@
         }
       }
     },
-    "Selected items" : {
+    "Send Feedback" : {
       "extractionState" : "stale",
       "localizations" : {
         "kk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Таңдалған элементтер"
+            "value" : "Пікір жіберу"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Выбранные элементы"
+            "value" : "Отправить отзыв"
           }
         }
       }
@@ -1914,18 +1867,34 @@
         }
       }
     },
-    "Share Extension" : {
+    "Share conversions as professional documents." : {
       "localizations" : {
         "kk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "«Бөлісу» кеңейтімі"
+            "value" : "Конверсияларды кәсіби құжаттар ретінде бөлісіңіз."
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Расширение «Поделиться»"
+            "value" : "Делититься результатами конверсий в виде профессиональных документов."
+          }
+        }
+      }
+    },
+    "Share Latynize" : {
+      "localizations" : {
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Latynize-пен бөлісу"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Поделиться Latynize"
           }
         }
       }
@@ -1942,22 +1911,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Поделиться текстом"
-          }
-        }
-      }
-    },
-    "Share your conversions as professional documents." : {
-      "localizations" : {
-        "kk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Түрлендірулермен кәсіби құжаттар ретінде бөлісіңіз."
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Делитесь своими конверсиями как профессиональными документами."
           }
         }
       }
@@ -2173,23 +2126,6 @@
         }
       }
     },
-    "This action cannot be undone." : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "kk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Бұл әрекетті қайтару мүмкін емес."
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Это действие нельзя отменить."
-          }
-        }
-      }
-    },
     "This Conversion" : {
       "localizations" : {
         "kk" : {
@@ -2270,18 +2206,18 @@
         }
       }
     },
-    "Use the app in your language. Switch anytime in Settings." : {
+    "Use the app in your language." : {
       "localizations" : {
         "kk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Қолданбаны өз тіліңізде пайдаланыңыз. Кез келген уақытта Параметрлерден ауыстырыңыз."
+            "value" : "Қолданбаны өз тіліңізде пайдаланыңыз."
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Используйте приложение на своём языке. Переключайтесь в Настройках."
+            "value" : "Используйте приложение на своем языке."
           }
         }
       }
@@ -2302,35 +2238,18 @@
         }
       }
     },
-    "What to export" : {
-      "extractionState" : "stale",
+    "What's New" : {
       "localizations" : {
         "kk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Нені экспорттау керек"
+            "value" : "Жаңалықтар"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Что экспортировать"
-          }
-        }
-      }
-    },
-    "What's New in" : {
-      "localizations" : {
-        "kk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Не жаңалық бар"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Что нового в"
+            "value" : "Что нового"
           }
         }
       }
