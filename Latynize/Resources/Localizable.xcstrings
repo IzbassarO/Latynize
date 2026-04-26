@@ -1477,52 +1477,6 @@
         }
       }
     },
-    "NSCameraUsageDescription" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Camera is used to scan and recognize Kazakh text for conversion.\n"
-          }
-        },
-        "kk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Камера қазақ мәтінін сканерлеу және түрлендіру үшін тану мақсатында қолданылады."
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Камера используется для сканирования и распознавания казахского текста для конвертации."
-          }
-        }
-      }
-    },
-    "NSPhotoLibraryUsageDescription" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Photo access is used to recognize text in your images."
-          }
-        },
-        "kk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Фотоға қолжетімділік суреттеріңіздегі мәтінді тану үшін қолданылады."
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Доступ к фото используется для распознавания текста на ваших изображениях."
-          }
-        }
-      }
-    },
     "OCR Result" : {
       "localizations" : {
         "kk" : {

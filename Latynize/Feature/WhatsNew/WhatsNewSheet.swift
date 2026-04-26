@@ -18,74 +18,128 @@ struct WhatsNewSheet: View {
             icon: "moon.stars.fill",
             iconColor: .indigo,
             title: "Dark Mode",
-            description: "Latynize now follows your system theme — or pick your favorite."
+            description: "Follows your system theme — or pick your own."
         ),
         Feature(
             icon: "globe",
             iconColor: .blue,
             title: "Russian and Kazakh",
-            description: "Use the app in your language. Switch anytime in Settings."
+            description: "Use the app in your language."
         ),
         Feature(
             icon: "star.fill",
             iconColor: .orange,
             title: "Favorites",
-            description: "Save your most-used conversions for quick access."
+            description: "Save your most-used conversions."
         ),
         Feature(
             icon: "doc.richtext",
             iconColor: Color.accentTeal,
             title: "Export to PDF",
-            description: "Share your conversions as professional documents."
+            description: "Share conversions as professional documents."
         ),
         Feature(
             icon: "sparkles",
             iconColor: .yellow,
             title: "Letter of the Day",
-            description: "Learn one Kazakh Latin letter every day with examples."
+            description: "Learn one Kazakh letter every day."
         ),
         Feature(
             icon: "rectangle.3.group.fill",
             iconColor: .pink,
             title: "Home Screen Widget",
-            description: "See today's letter right on your home screen."
-        ),
-        Feature(
-            icon: "square.and.arrow.up.fill",
-            iconColor: .green,
-            title: "Share Extension",
-            description: "Convert text from any app — Safari, Mail, Messages, and more."
+            description: "See today's letter on your home screen."
         )
     ]
     
     var body: some View {
         VStack(spacing: 0) {
-            // Header
-            VStack(spacing: 8) {
-                Text("What's New in")
-                    .font(.system(size: 26, weight: .bold))
+            ScrollView {
+                VStack(spacing: 0) {
+                    headerSection
+                        .padding(.top, 48)
+                        .padding(.bottom, 36)
+                    
+                    featuresSection
+                        .padding(.horizontal, 28)
+                        .padding(.bottom, 24)
+                }
+            }
+            
+            footerSection
+        }
+        .background(Color(uiColor: .systemBackground))
+        .interactiveDismissDisabled()
+    }
+    
+    // MARK: - Header
+    
+    private var headerSection: some View {
+        VStack(spacing: 6) {
+            Text("What's New")
+                .font(.system(size: 22, weight: .semibold))
+                .foregroundStyle(.secondary)
+            
+            HStack(alignment: .firstTextBaseline, spacing: 8) {
+                Text("Latynize")
+                    .font(.system(size: 36, weight: .black))
                     .foregroundStyle(.primary)
                 
-                Text("Latynize 2.0")
-                    .font(.system(size: 30, weight: .black))
+                Text("2.0")
+                    .font(.system(size: 36, weight: .black))
                     .foregroundStyle(Color.accentTeal)
             }
-            .padding(.top, 32)
-            .padding(.bottom, 24)
-            
-            // Features list
-            ScrollView {
-                VStack(spacing: 22) {
-                    ForEach(features) { feature in
-                        featureRow(feature)
-                    }
-                }
-                .padding(.horizontal, 24)
-                .padding(.bottom, 24)
+        }
+    }
+    
+    // MARK: - Features list
+    
+    private var featuresSection: some View {
+        VStack(spacing: 26) {
+            ForEach(features) { feature in
+                featureRow(feature)
+            }
+        }
+    }
+    
+    private func featureRow(_ feature: Feature) -> some View {
+        HStack(alignment: .center, spacing: 18) {
+            // Icon with subtle background
+            ZStack {
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(feature.iconColor.opacity(0.15))
+                    .frame(width: 48, height: 48)
+                
+                Image(systemName: feature.icon)
+                    .font(.system(size: 22, weight: .semibold))
+                    .foregroundStyle(feature.iconColor)
             }
             
-            // Continue button
-            VStack(spacing: 12) {
+            VStack(alignment: .leading, spacing: 3) {
+                Text(feature.title)
+                    .font(.system(size: 17, weight: .semibold))
+                    .foregroundStyle(.primary)
+                
+                Text(feature.description)
+                    .font(.system(size: 14))
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            
+            Spacer(minLength: 0)
+        }
+    }
+    
+    // MARK: - Footer
+    
+    private var footerSection: some View {
+        VStack(spacing: 0) {
+            // Subtle top divider
+            Rectangle()
+                .fill(Color.secondary.opacity(0.1))
+                .frame(height: 0.5)
+            
+            VStack(spacing: 0) {
                 Button {
                     WhatsNewService.shared.markAsSeen()
                     HapticService.success()
@@ -103,39 +157,10 @@ struct WhatsNewSheet: View {
                 }
                 .buttonStyle(.plain)
             }
-            .padding(.horizontal, 24)
-            .padding(.bottom, 24)
-            .background(
-                Color(uiColor: .systemBackground)
-                    .ignoresSafeArea()
-                    .shadow(color: .black.opacity(0.05), radius: 8, y: -4)
-            )
-        }
-        .background(Color(uiColor: .systemBackground))
-        .interactiveDismissDisabled()
-    }
-    
-    // MARK: - Feature Row
-    
-    private func featureRow(_ feature: Feature) -> some View {
-        HStack(alignment: .top, spacing: 16) {
-            Image(systemName: feature.icon)
-                .font(.system(size: 24, weight: .semibold))
-                .foregroundStyle(feature.iconColor)
-                .frame(width: 40, height: 40)
-            
-            VStack(alignment: .leading, spacing: 4) {
-                Text(feature.title)
-                    .font(.system(size: 16, weight: .semibold))
-                    .foregroundStyle(.primary)
-                
-                Text(feature.description)
-                    .font(.system(size: 14))
-                    .foregroundStyle(.secondary)
-                    .fixedSize(horizontal: false, vertical: true)
-            }
-            
-            Spacer(minLength: 0)
+            .padding(.horizontal, 28)
+            .padding(.top, 16)
+            .padding(.bottom, 20)
+            .background(Color(uiColor: .systemBackground))
         }
     }
 }

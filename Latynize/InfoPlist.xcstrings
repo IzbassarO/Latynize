@@ -1,0 +1,29 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "NSCameraUsageDescription" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Latynize uses the camera to scan and convert Kazakh text from images"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Latynize кескіндегі қазақ мәтінін сканерлеу және түрлендіру үшін камераны пайдаланады."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Latynize использует камеру для сканирования и конвертации казахского текста с изображений."
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.1"
+}
