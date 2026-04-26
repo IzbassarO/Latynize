@@ -135,6 +135,7 @@ struct OnboardingView: View {
     private func completeOnboarding() {
         HapticService.medium()
         withAnimation(.easeInOut(duration: 0.3)) {
+            WhatsNewService.shared.markFirstLaunchComplete()
             hasCompleted = true
         }
     }

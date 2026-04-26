@@ -13,7 +13,8 @@ struct LatynizeApp: App {
     
     @State private var themeManager = ThemeManager.shared
     @State private var languageManager = LanguageManager.shared
-    @State private var deepLinkLetter: String?
+    @State private var whatsNewService = WhatsNewService.shared
+    @State private var showWhatsNew = false
     
     var body: some Scene {
         WindowGroup {
@@ -22,6 +23,19 @@ struct LatynizeApp: App {
                 .environment(themeManager)
                 .environment(languageManager)
                 .environment(\.locale, languageManager.locale)
+                .onAppear {
+                    if whatsNewService.shouldShowWhatsNew {
+                        // Slight delay to let UI settle
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                            showWhatsNew = true
+                        }
+                    }
+                }
+                .sheet(isPresented: $showWhatsNew) {
+                    WhatsNewSheet()
+                        .environment(themeManager)
+                        .preferredColorScheme(themeManager.currentTheme.colorScheme)
+                }
                 .onOpenURL { url in
                     handleDeepLink(url)
                 }
@@ -31,11 +45,8 @@ struct LatynizeApp: App {
     
     private func handleDeepLink(_ url: URL) {
         guard url.scheme == "latynize" else { return }
-        
         if url.host == "letter" {
             let letter = url.lastPathComponent
-            deepLinkLetter = letter
-            // Post notification so ConvertView can pre-fill
             NotificationCenter.default.post(
                 name: .openLetterFromWidget,
                 object: nil,

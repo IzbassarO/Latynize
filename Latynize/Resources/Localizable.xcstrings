@@ -119,6 +119,22 @@
         }
       }
     },
+    "→" : {
+      "localizations" : {
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "→"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "→"
+          }
+        }
+      }
+    },
     "1 conversion" : {
       "localizations" : {
         "kk" : {
@@ -183,7 +199,7 @@
         }
       }
     },
-    "Airplane" : {
+    "After tapping, fully close the app (swipe up from app switcher) and reopen." : {
 
     },
     "All" : {
@@ -267,9 +283,6 @@
         }
       }
     },
-    "Angel" : {
-
-    },
     "Appearance" : {
       "localizations" : {
         "kk" : {
@@ -285,9 +298,6 @@
           }
         }
       }
-    },
-    "Apple" : {
-
     },
     "Auto-detect Cyrillic or Latin input" : {
       "localizations" : {
@@ -337,9 +347,6 @@
         }
       }
     },
-    "Bread" : {
-
-    },
     "Camera" : {
       "localizations" : {
         "kk" : {
@@ -388,12 +395,6 @@
         }
       }
     },
-    "Cattle" : {
-
-    },
-    "Child" : {
-
-    },
     "Choose Photo" : {
       "localizations" : {
         "kk" : {
@@ -409,9 +410,6 @@
           }
         }
       }
-    },
-    "City" : {
-
     },
     "Clear" : {
       "localizations" : {
@@ -541,6 +539,22 @@
         }
       }
     },
+    "Convert text from any app — Safari, Mail, Messages, and more." : {
+      "localizations" : {
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Кез келген қолданбадан мәтінді түрлендіріңіз — Safari, Mail, Хабарлар және басқалары."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Конвертируйте текст из любого приложения — Safari, Mail, Сообщения и других."
+          }
+        }
+      }
+    },
     "Converted" : {
       "localizations" : {
         "kk" : {
@@ -605,9 +619,6 @@
         }
       }
     },
-    "Country" : {
-
-    },
     "Cyrillic" : {
       "localizations" : {
         "kk" : {
@@ -637,6 +648,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Тёмная"
+          }
+        }
+      }
+    },
+    "Dark Mode" : {
+      "localizations" : {
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Қара тақырып"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Тёмная тема"
           }
         }
       }
@@ -673,7 +700,7 @@
         }
       }
     },
-    "Dawn" : {
+    "DEBUG" : {
 
     },
     "Delete" : {
@@ -741,9 +768,6 @@
         }
       }
     },
-    "Diamond" : {
-
-    },
     "Direction" : {
       "localizations" : {
         "kk" : {
@@ -759,9 +783,6 @@
           }
         }
       }
-    },
-    "Dirty" : {
-
     },
     "Done" : {
       "localizations" : {
@@ -813,7 +834,20 @@
       }
     },
     "EXAMPLE" : {
-
+      "localizations" : {
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "МЫСАЛ"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ПРИМЕР"
+          }
+        }
+      }
     },
     "Export" : {
       "localizations" : {
@@ -896,8 +930,21 @@
         }
       }
     },
-    "Father" : {
-
+    "Export to PDF" : {
+      "localizations" : {
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "PDF-ке экспорттау"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Экспорт в PDF"
+          }
+        }
+      }
     },
     "Favorite" : {
       "localizations" : {
@@ -948,12 +995,6 @@
         }
       }
     },
-    "Fir tree" : {
-
-    },
-    "Fire" : {
-
-    },
     "Format" : {
       "localizations" : {
         "kk" : {
@@ -985,9 +1026,6 @@
           }
         }
       }
-    },
-    "Fortune" : {
-
     },
     "Get Started" : {
       "localizations" : {
@@ -1037,8 +1075,21 @@
         }
       }
     },
-    "House" : {
-
+    "Home Screen Widget" : {
+      "localizations" : {
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Басты экран виджеті"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Виджет главного экрана"
+          }
+        }
+      }
     },
     "Kazakh" : {
       "localizations" : {
@@ -1072,9 +1123,6 @@
         }
       }
     },
-    "Lake" : {
-
-    },
     "Language" : {
       "localizations" : {
         "kk" : {
@@ -1087,6 +1135,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Язык"
+          }
+        }
+      }
+    },
+    "Last 7 Days" : {
+      "localizations" : {
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Соңғы 7 күн"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Последние 7 дней"
           }
         }
       }
@@ -1139,6 +1203,38 @@
         }
       }
     },
+    "Latynize 2.0" : {
+      "localizations" : {
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Latynize 2.0"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Latynize 2.0"
+          }
+        }
+      }
+    },
+    "Latynize now follows your system theme — or pick your favorite." : {
+      "localizations" : {
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Latynize енді жүйелік тақырыпты ұстанады — немесе өзіңізге ұнайтынды таңдаңыз."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Latynize теперь следует системной теме — или выберите свою."
+          }
+        }
+      }
+    },
     "Learn Kazakh Latin letters daily." : {
       "extractionState" : "stale",
       "localizations" : {
@@ -1157,7 +1253,20 @@
       }
     },
     "Learn one Kazakh Latin letter every day with examples." : {
-
+      "localizations" : {
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Күн сайын бір қазақ латын әріпін мысалдармен үйреніңіз."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Изучайте по одной казахской латинской букве каждый день с примерами."
+          }
+        }
+      }
     },
     "Legacy · 32 letters · Acute accents" : {
       "localizations" : {
@@ -1191,6 +1300,22 @@
         }
       }
     },
+    "Legacy 2018" : {
+      "localizations" : {
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ескі 2018"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Старый 2018"
+          }
+        }
+      }
+    },
     "Legacy 2018 (á, ó, ú)" : {
       "localizations" : {
         "kk" : {
@@ -1207,11 +1332,7 @@
         }
       }
     },
-    "Letter" : {
-
-    },
     "Letter of the day" : {
-      "extractionState" : "stale",
       "localizations" : {
         "kk" : {
           "stringUnit" : {
@@ -1244,7 +1365,20 @@
       }
     },
     "LETTER OF THE DAY" : {
-
+      "localizations" : {
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "КҮННІҢ ӘРПІ"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "БУКВА ДНЯ"
+          }
+        }
+      }
     },
     "Light" : {
       "extractionState" : "manual",
@@ -1311,9 +1445,6 @@
         }
       }
     },
-    "Moon" : {
-
-    },
     "No conversions yet" : {
       "localizations" : {
         "kk" : {
@@ -1342,6 +1473,52 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Нет избранного"
+          }
+        }
+      }
+    },
+    "NSCameraUsageDescription" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Camera is used to scan and recognize Kazakh text for conversion.\n"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Камера қазақ мәтінін сканерлеу және түрлендіру үшін тану мақсатында қолданылады."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Камера используется для сканирования и распознавания казахского текста для конвертации."
+          }
+        }
+      }
+    },
+    "NSPhotoLibraryUsageDescription" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Photo access is used to recognize text in your images."
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Фотоға қолжетімділік суреттеріңіздегі мәтінді тану үшін қолданылады."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Доступ к фото используется для распознавания текста на ваших изображениях."
           }
         }
       }
@@ -1426,9 +1603,6 @@
         }
       }
     },
-    "Photo" : {
-
-    },
     "Plain Text" : {
       "localizations" : {
         "kk" : {
@@ -1493,7 +1667,23 @@
         }
       }
     },
-    "River" : {
+    "Recommended" : {
+      "localizations" : {
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ұсынылады"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Рекомендуется"
+          }
+        }
+      }
+    },
+    "Reset What's New" : {
 
     },
     "Russian" : {
@@ -1508,6 +1698,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Русский"
+          }
+        }
+      }
+    },
+    "Russian and Kazakh" : {
+      "localizations" : {
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Орыс және қазақ"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Русский и казахский"
           }
         }
       }
@@ -1540,6 +1746,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Автосохранение конверсий"
+          }
+        }
+      }
+    },
+    "Save your most-used conversions for quick access." : {
+      "localizations" : {
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Жиі қолданылатын түрлендірулерді жылдам қол жеткізу үшін сақтаңыз."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сохраняйте часто используемые конверсии для быстрого доступа."
           }
         }
       }
@@ -1592,9 +1814,6 @@
         }
       }
     },
-    "Science" : {
-
-    },
     "Search conversions..." : {
       "localizations" : {
         "kk" : {
@@ -1607,6 +1826,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Поиск..."
+          }
+        }
+      }
+    },
+    "See today's letter right on your home screen." : {
+      "localizations" : {
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Күннің әрпін басты экранда көріңіз."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Видите букву дня прямо на главном экране."
           }
         }
       }
@@ -1725,6 +1960,22 @@
         }
       }
     },
+    "Share Extension" : {
+      "localizations" : {
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "«Бөлісу» кеңейтімі"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Расширение «Поделиться»"
+          }
+        }
+      }
+    },
     "Share Text" : {
       "localizations" : {
         "kk" : {
@@ -1737,6 +1988,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Поделиться текстом"
+          }
+        }
+      }
+    },
+    "Share your conversions as professional documents." : {
+      "localizations" : {
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Түрлендірулермен кәсіби құжаттар ретінде бөлісіңіз."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Делитесь своими конверсиями как профессиональными документами."
           }
         }
       }
@@ -1756,6 +2023,9 @@
           }
         }
       }
+    },
+    "Simulate v1 user" : {
+
     },
     "Skip" : {
       "localizations" : {
@@ -1788,9 +2058,6 @@
           }
         }
       }
-    },
-    "Son" : {
-
     },
     "Source" : {
       "localizations" : {
@@ -1841,7 +2108,20 @@
       }
     },
     "Standard 2021" : {
-
+      "localizations" : {
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Стандарт 2021"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Стандарт 2021"
+          }
+        }
+      }
     },
     "Standard 2021 (ä, ö, ü, ş) ✓" : {
       "localizations" : {
@@ -1874,12 +2154,6 @@
           }
         }
       }
-    },
-    "Steppe" : {
-
-    },
-    "Stone" : {
-
     },
     "System" : {
       "localizations" : {
@@ -1929,9 +2203,6 @@
         }
       }
     },
-    "Tea" : {
-
-    },
     "Text detected in clipboard" : {
       "localizations" : {
         "kk" : {
@@ -1947,9 +2218,6 @@
           }
         }
       }
-    },
-    "Thing" : {
-
     },
     "This action cannot be undone." : {
       "extractionState" : "stale",
@@ -1984,10 +2252,39 @@
         }
       }
     },
-    "Truth" : {
-
+    "Today" : {
+      "localizations" : {
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Бүгін"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сегодня"
+          }
+        }
+      }
     },
     "Try an example" : {
+      "localizations" : {
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Мысалды көру"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Попробовать пример"
+          }
+        }
+      }
+    },
+    "Try this example" : {
       "localizations" : {
         "kk" : {
           "stringUnit" : {
@@ -2019,6 +2316,22 @@
         }
       }
     },
+    "Use the app in your language. Switch anytime in Settings." : {
+      "localizations" : {
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Қолданбаны өз тіліңізде пайдаланыңыз. Кез келген уақытта Параметрлерден ауыстырыңыз."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Используйте приложение на своём языке. Переключайтесь в Настройках."
+          }
+        }
+      }
+    },
     "Version" : {
       "localizations" : {
         "kk" : {
@@ -2034,9 +2347,6 @@
           }
         }
       }
-    },
-    "Water" : {
-
     },
     "What to export" : {
       "extractionState" : "stale",
@@ -2055,11 +2365,21 @@
         }
       }
     },
-    "Work" : {
-
-    },
-    "Year" : {
-
+    "What's New in" : {
+      "localizations" : {
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не жаңалық бар"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Что нового в"
+          }
+        }
+      }
     },
     "Кириллица" : {
       "localizations" : {

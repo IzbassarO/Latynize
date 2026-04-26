@@ -198,7 +198,7 @@ struct WordOfTheDaySheet: View {
         }
     }
     
-    private func standardRow(title: LocalizedStringKey, badge: String?, badgeColor: Color, value: String) -> some View {
+    private func standardRow(title: LocalizedStringKey, badge: LocalizedStringKey?, badgeColor: Color, value: String) -> some View {
         HStack {
             VStack(alignment: .leading, spacing: 4) {
                 HStack(spacing: 6) {

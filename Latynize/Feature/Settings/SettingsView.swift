@@ -35,6 +35,26 @@ struct SettingsView: View {
                 languageSection
                 preferencesSection
                 dataSection
+#if DEBUG
+Section {
+    Button("Simulate v1 user") {
+        UserDefaults.standard.set("1.0.0", forKey: "WhatsNew.lastSeenVersion")
+        UserDefaults.standard.set(true, forKey: "WhatsNew.hasLaunchedBefore")
+        HapticService.success()
+    }
+    
+    Button("Reset What's New") {
+        UserDefaults.standard.removeObject(forKey: "WhatsNew.lastSeenVersion")
+        UserDefaults.standard.removeObject(forKey: "WhatsNew.hasLaunchedBefore")
+        HapticService.success()
+    }
+} header: {
+    Text("DEBUG")
+} footer: {
+    Text("After tapping, fully close the app (swipe up from app switcher) and reopen.")
+        .font(.system(size: 11))
+}
+#endif
                 aboutSection
             }
             .navigationTitle("Settings")

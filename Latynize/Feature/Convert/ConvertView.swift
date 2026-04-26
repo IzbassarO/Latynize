@@ -15,6 +15,8 @@ struct ConvertView: View {
     @Environment(ThemeManager.self) private var theme
     @State private var viewModel = ConvertViewModel()
     @State private var showSettings = false
+    @State private var showWordOfTheDay = false
+    @State private var todayLetter = LetterOfTheDay.forDate()
     @FocusState private var isInputFocused: Bool
     
     var body: some View {
@@ -25,16 +27,20 @@ struct ConvertView: View {
                 
                 ScrollView {
                     VStack(spacing: 16) {
-                        // Smart clipboard suggestion
                         if viewModel.showClipboardSuggestion {
                             clipboardBanner
                         }
                         
                         directionSwitcher
+                        
+                        WordOfTheDayCard(letter: todayLetter) {
+                            showWordOfTheDay = true
+                            HapticService.light()
+                        }
+                        
                         inputCard
                         outputCard
                         
-                        // Example phrases (shown when no input)
                         if !viewModel.hasInput {
                             examplesSection
                         }
@@ -71,6 +77,13 @@ struct ConvertView: View {
                     .preferredColorScheme(theme.currentTheme.colorScheme)
             }
             .sheet(isPresented: $viewModel.showAlphabetReference) { AlphabetReferenceView() }
+            .sheet(isPresented: $showWordOfTheDay) {
+                WordOfTheDaySheet { example in
+                    viewModel.applyExample(example)
+                }
+                .environment(theme)
+                .preferredColorScheme(theme.currentTheme.colorScheme)
+            }
             .overlay(alignment: .top) {
                 if viewModel.showCopiedToast {
                     toastView.transition(.move(edge: .top).combined(with: .opacity))
