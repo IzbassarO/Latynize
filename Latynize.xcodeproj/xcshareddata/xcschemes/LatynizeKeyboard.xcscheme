@@ -44,6 +44,30 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES"
       shouldAutocreateTestPlan = "YES">
+      <Testables>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "A2B7C4CE2F6BBBCB009B7043"
+               BuildableName = "LatynizeTests.xctest"
+               BlueprintName = "LatynizeTests"
+               ReferencedContainer = "container:Latynize.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "A2B7C4D82F6BBBCB009B7043"
+               BuildableName = "LatynizeUITests.xctest"
+               BlueprintName = "LatynizeUITests"
+               ReferencedContainer = "container:Latynize.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+      </Testables>
    </TestAction>
    <LaunchAction
       buildConfiguration = "Debug"

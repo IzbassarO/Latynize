@@ -19,7 +19,8 @@ struct HistoryView: View {
     
     @State private var viewModel = HistoryViewModel()
     @State private var selectedRecord: ConversionRecord?
-    @State private var showShareSheet = false
+    
+    @State private var exportedFile: ExportedFile?
     
     var body: some View {
         NavigationStack {
@@ -56,15 +57,18 @@ struct HistoryView: View {
                     itemCount: viewModel.resolvedRecords(from: allRecords).count
                 ) { format in
                     viewModel.performExport(format: format, allRecords: allRecords)
-                    scheduleShareSheet()
+                    // Wait for export sheet dismissal, then show share
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                        if let url = viewModel.exportedFileURL {
+                            exportedFile = ExportedFile(url: url)
+                        }
+                    }
                 }
                 .environment(theme)
                 .preferredColorScheme(theme.currentTheme.colorScheme)
             }
-            .sheet(isPresented: $showShareSheet) {
-                if let url = viewModel.exportedFileURL {
-                    ShareSheet(items: [url])
-                }
+            .sheet(item: $exportedFile) { file in
+                ShareSheet(items: [file.url])
             }
         }
     }
@@ -73,12 +77,6 @@ struct HistoryView: View {
     
     private var favoritesCount: Int {
         allRecords.filter { $0.isFavorite }.count
-    }
-    
-    private func scheduleShareSheet() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
-            showShareSheet = true
-        }
     }
     
     // MARK: - Toolbars

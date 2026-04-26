@@ -78,6 +78,14 @@ struct ConvertView: View {
             }
             .animation(.spring(duration: 0.35), value: viewModel.showCopiedToast)
             .animation(.easeInOut(duration: 0.25), value: viewModel.showClipboardSuggestion)
+            .onReceive(NotificationCenter.default.publisher(for: .openLetterFromWidget)) { notification in
+                if let letter = notification.userInfo?["letter"] as? String {
+                    viewModel.inputText = letter
+                    viewModel.direction = .cyrillicToLatin
+                    // Trigger conversion
+                    viewModel.onInputChanged()
+                }
+            }
         }
     }
     

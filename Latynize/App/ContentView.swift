@@ -66,10 +66,6 @@ enum AppTab: String, CaseIterable {
     }
 }
 
-extension Color {
-    static let accentTeal = Color(red: 78/255, green: 205/255, blue: 196/255)
-}
-
 #Preview {
     ContentView()
         .modelContainer(for: ConversionRecord.self, inMemory: true)

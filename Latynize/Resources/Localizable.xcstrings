@@ -33,6 +33,22 @@
         }
       }
     },
+    "%lld conversions" : {
+      "localizations" : {
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld түрлендіру"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld конверсий"
+          }
+        }
+      }
+    },
     "%lld selected" : {
       "localizations" : {
         "kk" : {
@@ -103,6 +119,22 @@
         }
       }
     },
+    "1 conversion" : {
+      "localizations" : {
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1 түрлендіру"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1 конверсия"
+          }
+        }
+      }
+    },
     "2018" : {
       "localizations" : {
         "kk" : {
@@ -151,6 +183,9 @@
         }
       }
     },
+    "Airplane" : {
+
+    },
     "All" : {
       "localizations" : {
         "kk" : {
@@ -168,6 +203,7 @@
       }
     },
     "All conversions" : {
+      "extractionState" : "stale",
       "localizations" : {
         "kk" : {
           "stringUnit" : {
@@ -179,6 +215,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Все преобразования"
+          }
+        }
+      }
+    },
+    "All Conversions" : {
+      "localizations" : {
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Барлық түрлендірулер"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Все конверсии"
           }
         }
       }
@@ -215,6 +267,9 @@
         }
       }
     },
+    "Angel" : {
+
+    },
     "Appearance" : {
       "localizations" : {
         "kk" : {
@@ -230,6 +285,9 @@
           }
         }
       }
+    },
+    "Apple" : {
+
     },
     "Auto-detect Cyrillic or Latin input" : {
       "localizations" : {
@@ -279,6 +337,9 @@
         }
       }
     },
+    "Bread" : {
+
+    },
     "Camera" : {
       "localizations" : {
         "kk" : {
@@ -327,6 +388,12 @@
         }
       }
     },
+    "Cattle" : {
+
+    },
+    "Child" : {
+
+    },
     "Choose Photo" : {
       "localizations" : {
         "kk" : {
@@ -342,6 +409,9 @@
           }
         }
       }
+    },
+    "City" : {
+
     },
     "Clear" : {
       "localizations" : {
@@ -535,6 +605,9 @@
         }
       }
     },
+    "Country" : {
+
+    },
     "Cyrillic" : {
       "localizations" : {
         "kk" : {
@@ -599,6 +672,9 @@
           }
         }
       }
+    },
+    "Dawn" : {
+
     },
     "Delete" : {
       "localizations" : {
@@ -665,6 +741,9 @@
         }
       }
     },
+    "Diamond" : {
+
+    },
     "Direction" : {
       "localizations" : {
         "kk" : {
@@ -680,6 +759,9 @@
           }
         }
       }
+    },
+    "Dirty" : {
+
     },
     "Done" : {
       "localizations" : {
@@ -713,6 +795,26 @@
         }
       }
     },
+    "Example" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Мысал"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Пример"
+          }
+        }
+      }
+    },
+    "EXAMPLE" : {
+
+    },
     "Export" : {
       "localizations" : {
         "kk" : {
@@ -725,6 +827,38 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Экспорт"
+          }
+        }
+      }
+    },
+    "Export All" : {
+      "localizations" : {
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Барлығын экспорттау"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Экспорт всего"
+          }
+        }
+      }
+    },
+    "Export Favorites" : {
+      "localizations" : {
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Таңдаулыларды экспорттау"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Экспорт избранного"
           }
         }
       }
@@ -746,6 +880,7 @@
       }
     },
     "Export this conversion as a formatted document." : {
+      "extractionState" : "stale",
       "localizations" : {
         "kk" : {
           "stringUnit" : {
@@ -760,6 +895,9 @@
           }
         }
       }
+    },
+    "Father" : {
+
     },
     "Favorite" : {
       "localizations" : {
@@ -794,6 +932,7 @@
       }
     },
     "Favorites only" : {
+      "extractionState" : "stale",
       "localizations" : {
         "kk" : {
           "stringUnit" : {
@@ -808,6 +947,12 @@
           }
         }
       }
+    },
+    "Fir tree" : {
+
+    },
+    "Fire" : {
+
     },
     "Format" : {
       "localizations" : {
@@ -840,6 +985,9 @@
           }
         }
       }
+    },
+    "Fortune" : {
+
     },
     "Get Started" : {
       "localizations" : {
@@ -889,6 +1037,9 @@
         }
       }
     },
+    "House" : {
+
+    },
     "Kazakh" : {
       "localizations" : {
         "kk" : {
@@ -920,6 +1071,9 @@
           }
         }
       }
+    },
+    "Lake" : {
+
     },
     "Language" : {
       "localizations" : {
@@ -985,6 +1139,26 @@
         }
       }
     },
+    "Learn Kazakh Latin letters daily." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Қазақ латын әріптерін күн сайын үйреніңіз."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Изучайте казахские латинские буквы каждый день."
+          }
+        }
+      }
+    },
+    "Learn one Kazakh Latin letter every day with examples." : {
+
+    },
     "Legacy · 32 letters · Acute accents" : {
       "localizations" : {
         "kk" : {
@@ -1032,6 +1206,45 @@
           }
         }
       }
+    },
+    "Letter" : {
+
+    },
+    "Letter of the day" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Күннің әрпі"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Буква дня"
+          }
+        }
+      }
+    },
+    "Letter of the Day" : {
+      "localizations" : {
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Күннің әрпі"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Буква дня"
+          }
+        }
+      }
+    },
+    "LETTER OF THE DAY" : {
+
     },
     "Light" : {
       "extractionState" : "manual",
@@ -1097,6 +1310,9 @@
           }
         }
       }
+    },
+    "Moon" : {
+
     },
     "No conversions yet" : {
       "localizations" : {
@@ -1210,6 +1426,9 @@
         }
       }
     },
+    "Photo" : {
+
+    },
     "Plain Text" : {
       "localizations" : {
         "kk" : {
@@ -1273,6 +1492,9 @@
           }
         }
       }
+    },
+    "River" : {
+
     },
     "Russian" : {
       "localizations" : {
@@ -1370,6 +1592,9 @@
         }
       }
     },
+    "Science" : {
+
+    },
     "Search conversions..." : {
       "localizations" : {
         "kk" : {
@@ -1387,6 +1612,7 @@
       }
     },
     "Select" : {
+      "extractionState" : "stale",
       "localizations" : {
         "kk" : {
           "stringUnit" : {
@@ -1418,7 +1644,40 @@
         }
       }
     },
+    "Select to Export" : {
+      "localizations" : {
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Экспорттау үшін таңдау"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выбрать для экспорта"
+          }
+        }
+      }
+    },
+    "Selected Conversions" : {
+      "localizations" : {
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Таңдалған түрлендірулер"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выбранные конверсии"
+          }
+        }
+      }
+    },
     "Selected items" : {
+      "extractionState" : "stale",
       "localizations" : {
         "kk" : {
           "stringUnit" : {
@@ -1530,6 +1789,9 @@
         }
       }
     },
+    "Son" : {
+
+    },
     "Source" : {
       "localizations" : {
         "kk" : {
@@ -1578,6 +1840,9 @@
         }
       }
     },
+    "Standard 2021" : {
+
+    },
     "Standard 2021 (ä, ö, ü, ş) ✓" : {
       "localizations" : {
         "kk" : {
@@ -1609,6 +1874,12 @@
           }
         }
       }
+    },
+    "Steppe" : {
+
+    },
+    "Stone" : {
+
     },
     "System" : {
       "localizations" : {
@@ -1658,6 +1929,9 @@
         }
       }
     },
+    "Tea" : {
+
+    },
     "Text detected in clipboard" : {
       "localizations" : {
         "kk" : {
@@ -1673,6 +1947,9 @@
           }
         }
       }
+    },
+    "Thing" : {
+
     },
     "This action cannot be undone." : {
       "extractionState" : "stale",
@@ -1690,6 +1967,25 @@
           }
         }
       }
+    },
+    "This Conversion" : {
+      "localizations" : {
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Бұл түрлендіру"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Эта конверсия"
+          }
+        }
+      }
+    },
+    "Truth" : {
+
     },
     "Try an example" : {
       "localizations" : {
@@ -1739,7 +2035,11 @@
         }
       }
     },
+    "Water" : {
+
+    },
     "What to export" : {
+      "extractionState" : "stale",
       "localizations" : {
         "kk" : {
           "stringUnit" : {
@@ -1754,6 +2054,12 @@
           }
         }
       }
+    },
+    "Work" : {
+
+    },
+    "Year" : {
+
     },
     "Кириллица" : {
       "localizations" : {

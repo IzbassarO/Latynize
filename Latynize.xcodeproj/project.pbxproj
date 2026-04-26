@@ -6,7 +6,20 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		A2A366722F995571008BF868 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2A366712F995570008BF868 /* WidgetKit.framework */; };
+		A2A366742F995571008BF868 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2A366732F995571008BF868 /* SwiftUI.framework */; };
+		A2A366832F995572008BF868 /* LatynizeWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = A2A3666F2F995570008BF868 /* LatynizeWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
+		A2A366812F995572008BF868 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A2B7C4B82F6BBBC9009B7043 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A2A3666E2F995570008BF868;
+			remoteInfo = LatynizeWidgetExtension;
+		};
 		A2B7C4D02F6BBBCB009B7043 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A2B7C4B82F6BBBC9009B7043 /* Project object */;
@@ -30,6 +43,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				A2A366832F995572008BF868 /* LatynizeWidgetExtension.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -37,15 +51,46 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		A2A3666F2F995570008BF868 /* LatynizeWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = LatynizeWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		A2A366712F995570008BF868 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		A2A366732F995571008BF868 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		A2B7C4C02F6BBBC9009B7043 /* Latynize.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Latynize.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2B7C4CF2F6BBBCB009B7043 /* LatynizeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LatynizeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2B7C4D92F6BBBCB009B7043 /* LatynizeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LatynizeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		A2A366872F995572008BF868 /* Exceptions for "LatynizeWidget" folder in "LatynizeWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = A2A3666E2F995570008BF868 /* LatynizeWidgetExtension */;
+		};
+		A2A366892F9955C4008BF868 /* Exceptions for "Latynize" folder in "LatynizeWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Core/Engine/Alphabet2018.swift,
+				Core/Engine/Alphabet2021.swift,
+				Core/Engine/AlphabetMapping.swift,
+				Core/Engine/ConversionEngine.swift,
+				Core/Engine/ScriptDetector.swift,
+				"Shared/Extensions/Color+Accent.swift",
+				Shared/LetterOfTheDay.swift,
+			);
+			target = A2A3666E2F995570008BF868 /* LatynizeWidgetExtension */;
+		};
+		A2A366902F995611008BF868 /* Exceptions for "LatynizeWidget" folder in "Latynize" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				LatynizeWidget.swift,
+			);
+			target = A2B7C4BF2F6BBBC9009B7043 /* Latynize */;
+		};
 		A2A6DC412F954F2E002C3C07 /* Exceptions for "Latynize" folder in "Latynize" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				Info.plist,
 				Tests/ConversionEngineTests.swift,
 			);
 			target = A2B7C4BF2F6BBBC9009B7043 /* Latynize */;
@@ -60,11 +105,21 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		A2A366752F995571008BF868 /* LatynizeWidget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				A2A366902F995611008BF868 /* Exceptions for "LatynizeWidget" folder in "Latynize" target */,
+				A2A366872F995572008BF868 /* Exceptions for "LatynizeWidget" folder in "LatynizeWidgetExtension" target */,
+			);
+			path = LatynizeWidget;
+			sourceTree = "<group>";
+		};
 		A2B7C4C22F6BBBC9009B7043 /* Latynize */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				A2A6DC412F954F2E002C3C07 /* Exceptions for "Latynize" folder in "Latynize" target */,
 				A2A6DC422F954F2E002C3C07 /* Exceptions for "Latynize" folder in "LatynizeTests" target */,
+				A2A366892F9955C4008BF868 /* Exceptions for "Latynize" folder in "LatynizeWidgetExtension" target */,
 			);
 			path = Latynize;
 			sourceTree = "<group>";
@@ -82,6 +137,15 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		A2A3666C2F995570008BF868 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A2A366742F995571008BF868 /* SwiftUI.framework in Frameworks */,
+				A2A366722F995571008BF868 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A2B7C4BD2F6BBBC9009B7043 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -106,12 +170,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A2A366702F995570008BF868 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A2A366712F995570008BF868 /* WidgetKit.framework */,
+				A2A366732F995571008BF868 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		A2B7C4B72F6BBBC9009B7043 = {
 			isa = PBXGroup;
 			children = (
 				A2B7C4C22F6BBBC9009B7043 /* Latynize */,
 				A2B7C4D22F6BBBCB009B7043 /* LatynizeTests */,
 				A2B7C4DC2F6BBBCB009B7043 /* LatynizeUITests */,
+				A2A366752F995571008BF868 /* LatynizeWidget */,
+				A2A366702F995570008BF868 /* Frameworks */,
 				A2B7C4C12F6BBBC9009B7043 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -122,6 +197,7 @@
 				A2B7C4C02F6BBBC9009B7043 /* Latynize.app */,
 				A2B7C4CF2F6BBBCB009B7043 /* LatynizeTests.xctest */,
 				A2B7C4D92F6BBBCB009B7043 /* LatynizeUITests.xctest */,
+				A2A3666F2F995570008BF868 /* LatynizeWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -129,6 +205,28 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		A2A3666E2F995570008BF868 /* LatynizeWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A2A366842F995572008BF868 /* Build configuration list for PBXNativeTarget "LatynizeWidgetExtension" */;
+			buildPhases = (
+				A2A3666B2F995570008BF868 /* Sources */,
+				A2A3666C2F995570008BF868 /* Frameworks */,
+				A2A3666D2F995570008BF868 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				A2A366752F995571008BF868 /* LatynizeWidget */,
+			);
+			name = LatynizeWidgetExtension;
+			packageProductDependencies = (
+			);
+			productName = LatynizeWidgetExtension;
+			productReference = A2A3666F2F995570008BF868 /* LatynizeWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		A2B7C4BF2F6BBBC9009B7043 /* Latynize */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = A2B7C4E32F6BBBCB009B7043 /* Build configuration list for PBXNativeTarget "Latynize" */;
@@ -141,6 +239,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				A2A366822F995572008BF868 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				A2B7C4C22F6BBBC9009B7043 /* Latynize */,
@@ -208,6 +307,9 @@
 				LastSwiftUpdateCheck = 2600;
 				LastUpgradeCheck = 2600;
 				TargetAttributes = {
+					A2A3666E2F995570008BF868 = {
+						CreatedOnToolsVersion = 26.0.1;
+					};
 					A2B7C4BF2F6BBBC9009B7043 = {
 						CreatedOnToolsVersion = 26.0.1;
 					};
@@ -240,11 +342,19 @@
 				A2B7C4BF2F6BBBC9009B7043 /* Latynize */,
 				A2B7C4CE2F6BBBCB009B7043 /* LatynizeTests */,
 				A2B7C4D82F6BBBCB009B7043 /* LatynizeUITests */,
+				A2A3666E2F995570008BF868 /* LatynizeWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		A2A3666D2F995570008BF868 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A2B7C4BE2F6BBBC9009B7043 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -269,6 +379,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		A2A3666B2F995570008BF868 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A2B7C4BC2F6BBBC9009B7043 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -293,6 +410,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		A2A366822F995572008BF868 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A2A3666E2F995570008BF868 /* LatynizeWidgetExtension */;
+			targetProxy = A2A366812F995572008BF868 /* PBXContainerItemProxy */;
+		};
 		A2B7C4D12F6BBBCB009B7043 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = A2B7C4BF2F6BBBC9009B7043 /* Latynize */;
@@ -306,6 +428,66 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		A2A366852F995572008BF868 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 5S8YJ969V5;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = LatynizeWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = LatynizeWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.izbassar.Latynize.LatynizeWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A2A366862F995572008BF868 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 5S8YJ969V5;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = LatynizeWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = LatynizeWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.izbassar.Latynize.LatynizeWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		A2B7C4E12F6BBBCB009B7043 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -440,6 +622,7 @@
 				DEVELOPMENT_TEAM = 5S8YJ969V5;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Latynize/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Latynize;
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
@@ -483,6 +666,7 @@
 				DEVELOPMENT_TEAM = 5S8YJ969V5;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Latynize/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Latynize;
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
@@ -602,6 +786,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		A2A366842F995572008BF868 /* Build configuration list for PBXNativeTarget "LatynizeWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A2A366852F995572008BF868 /* Debug */,
+				A2A366862F995572008BF868 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		A2B7C4BB2F6BBBC9009B7043 /* Build configuration list for PBXProject "Latynize" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

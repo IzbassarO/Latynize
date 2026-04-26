@@ -16,6 +16,8 @@ struct DetailView: View {
     @Environment(ThemeManager.self) private var theme
     
     @State private var isExportSheetPresented = false
+    @State private var exportedFile: ExportedFile?
+    
     @State private var exportedURL: URL?
     @State private var showShareSheet = false
     
@@ -56,12 +58,12 @@ struct DetailView: View {
                 itemCount: 1
             ) { format in
                 performExport(format: format)
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
-                    showShareSheet = true
-                }
             }
             .environment(theme)
             .preferredColorScheme(theme.currentTheme.colorScheme)
+        }
+        .sheet(item: $exportedFile) { file in
+            ShareSheet(items: [file.url])
         }
         .sheet(isPresented: $showShareSheet) {
             if let url = exportedURL {
@@ -138,12 +140,20 @@ struct DetailView: View {
     // MARK: - Export
     
     private func performExport(format: ExportOptionsSheet.Format) {
+        let url: URL?
         switch format {
         case .pdf:
-            exportedURL = PDFExportService.shared.exportSingle(record)
+            url = PDFExportService.shared.exportSingle(record)
         case .text:
-            exportedURL = TextExportService.shared.exportSingle(record)
+            url = TextExportService.shared.exportSingle(record)
         }
-        HapticService.success()
+        
+        if let url = url {
+            // Delay to let export sheet dismiss first
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                exportedFile = ExportedFile(url: url)
+                HapticService.success()
+            }
+        }
     }
 }
