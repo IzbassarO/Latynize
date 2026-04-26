@@ -16,6 +16,15 @@ struct LatynizeApp: App {
     @State private var whatsNewService = WhatsNewService.shared
     @State private var showWhatsNew = false
     
+    init() {
+        // Support UI test launch arguments
+        if CommandLine.arguments.contains("-resetOnboarding") {
+            UserDefaults.standard.removeObject(forKey: "hasCompletedOnboarding")
+            UserDefaults.standard.removeObject(forKey: "WhatsNew.lastSeenVersion")
+            UserDefaults.standard.removeObject(forKey: "WhatsNew.hasLaunchedBefore")
+        }
+    }
+    
     var body: some Scene {
         WindowGroup {
             ContentView()

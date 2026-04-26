@@ -4,9 +4,6 @@
     "" : {
 
     },
-    " " : {
-
-    },
     "·" : {
       "localizations" : {
         "kk" : {
@@ -151,8 +148,21 @@
         }
       }
     },
-    "2.0" : {
-
+    "100% Private" : {
+      "localizations" : {
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "100% жеке"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "100% приватно"
+          }
+        }
+      }
     },
     "2018" : {
       "localizations" : {
@@ -202,22 +212,6 @@
         }
       }
     },
-    "After tapping, fully close the app and reopen." : {
-      "localizations" : {
-        "kk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Түрткеннен кейін қолданбаны толығымен жауып, қайта ашыңыз."
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "После нажатия полностью закройте приложение и откройте его снова."
-          }
-        }
-      }
-    },
     "All" : {
       "localizations" : {
         "kk" : {
@@ -230,23 +224,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Все"
-          }
-        }
-      }
-    },
-    "All conversions" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "kk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Барлық түрлендірулер"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Все преобразования"
           }
         }
       }
@@ -379,6 +356,22 @@
         }
       }
     },
+    "Built for Learning" : {
+      "localizations" : {
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Үйренуге арналған"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Создано для обучения"
+          }
+        }
+      }
+    },
     "Camera" : {
       "localizations" : {
         "kk" : {
@@ -429,6 +422,12 @@
     },
     "Check out Latynize — Kazakh script converter" : {
       "localizations" : {
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Latynize-ты қараңыз — қазақ жазуын түрлендіруші"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -565,6 +564,22 @@
         }
       }
     },
+    "Convert Kazakh text between Cyrillic and Latin scripts — instantly, on your device." : {
+      "localizations" : {
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Қазақ мәтінін кириллица мен латын графикасы арасында түрлендіріңіз — лезде, құрылғыңызда."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Конвертируйте казахский текст между кириллицей и латиницей — мгновенно, на вашем устройстве."
+          }
+        }
+      }
+    },
     "Convert some text and it will\nautomatically appear here." : {
       "localizations" : {
         "kk" : {
@@ -661,6 +676,22 @@
         }
       }
     },
+    "Daily letters, examples, widgets" : {
+      "localizations" : {
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Күн сайын әріптер, мысалдар, виджеттер"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Буквы каждый день, примеры, виджеты"
+          }
+        }
+      }
+    },
     "Dark" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -725,9 +756,6 @@
           }
         }
       }
-    },
-    "DEBUG" : {
-
     },
     "Delete" : {
       "localizations" : {
@@ -821,6 +849,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Английский"
+          }
+        }
+      }
+    },
+    "Everything stays on your device. No internet needed. No data collection. Ever." : {
+      "localizations" : {
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Бәрі құрылғыңызда қалады. Интернет қажет емес. Деректер жиналмайды. Ешқашан."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Всё остаётся на вашем устройстве. Интернет не нужен. Никакого сбора данных. Никогда."
           }
         }
       }
@@ -1081,6 +1125,22 @@
         }
       }
     },
+    "Kazakh Script Converter" : {
+      "localizations" : {
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Қазақ жазуын түрлендіруші"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Конвертер казахской письменности"
+          }
+        }
+      }
+    },
     "Kazakhstan is transitioning its Kazakh-language alphabet from Cyrillic to Latin script. The reform started in 2017 with a phased transition planned through 2031. The 2021 version is widely considered the final candidate." : {
       "localizations" : {
         "kk" : {
@@ -1144,6 +1204,9 @@
           }
         }
       }
+    },
+    "Latınşa" : {
+
     },
     "Latynize" : {
       "localizations" : {
@@ -1257,22 +1320,6 @@
         }
       }
     },
-    "Letter of the day" : {
-      "localizations" : {
-        "kk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Күннің әрпі"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Буква дня"
-          }
-        }
-      }
-    },
     "Letter of the Day" : {
       "localizations" : {
         "kk" : {
@@ -1327,13 +1374,13 @@
         "kk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Тікелей сканерлеу құрылғыда қолжетімді.\\nМәтінді тану үшін фото таңдаңыз."
+            "value" : "Тікелей сканерлеу құрылғыда қолжетімді.\nМәтінді тану үшін фото таңдаңыз."
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Сканирование доступно на устройстве.\\nВыберите фото для распознавания текста."
+            "value" : "Сканирование доступно на устройстве.\nВыберите фото для распознавания текста."
           }
         }
       }
@@ -1350,22 +1397,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Сделано с заботой для Казахстана"
-          }
-        }
-      }
-    },
-    "Mätindi jaziñiz..." : {
-      "localizations" : {
-        "kk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mätindi jaziñiz..."
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mätindi jaziñiz..."
           }
         }
       }
@@ -1414,6 +1445,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Нет избранного"
+          }
+        }
+      }
+    },
+    "No servers. No tracking." : {
+      "localizations" : {
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Серверлер жоқ. Бақылау жоқ."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Нет серверов. Нет отслеживания."
           }
         }
       }
@@ -1514,6 +1561,38 @@
         }
       }
     },
+    "Point your camera at signs, books, or documents. Tap any text to get the Latin version." : {
+      "localizations" : {
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Камераны белгілерге, кітаптарға немесе құжаттарға бағыттаңыз. Латын нұсқасын алу үшін кез келген мәтінге басыңыз."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Наведите камеру на вывески, книги или документы. Нажмите на текст, чтобы получить латинскую версию."
+          }
+        }
+      }
+    },
+    "Powered by on-device AI" : {
+      "localizations" : {
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Құрылғыдағы ЖИ-мен жұмыс істейді"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "На основе ИИ на устройстве"
+          }
+        }
+      }
+    },
     "Preferences" : {
       "localizations" : {
         "kk" : {
@@ -1590,22 +1669,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Рекомендуется"
-          }
-        }
-      }
-    },
-    "Reset What's New" : {
-      "localizations" : {
-        "kk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Жаңалықтарды қалпына келтіріңіз"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Сбросить настройки \"Что нового\""
           }
         }
       }
@@ -1706,6 +1769,22 @@
         }
       }
     },
+    "Scan & Convert" : {
+      "localizations" : {
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сканерлеу және түрлендіру"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сканировать и конвертировать"
+          }
+        }
+      }
+    },
     "Scan Result" : {
       "localizations" : {
         "kk" : {
@@ -1750,6 +1829,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Поиск..."
+          }
+        }
+      }
+    },
+    "See a new Kazakh letter every day, save favorites, and learn the new alphabet step by step." : {
+      "localizations" : {
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Күн сайын жаңа қазақ әрпін көріңіз, таңдаулыларды сақтаңыз және жаңа әліпбиді қадамдап үйреніңіз."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Узнавайте новую казахскую букву каждый день, сохраняйте избранное и изучайте новый алфавит шаг за шагом."
           }
         }
       }
@@ -1814,23 +1909,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Выбранные конверсии"
-          }
-        }
-      }
-    },
-    "Send Feedback" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "kk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Пікір жіберу"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Отправить отзыв"
           }
         }
       }
@@ -1930,9 +2008,6 @@
           }
         }
       }
-    },
-    "Simulate v1 user" : {
-
     },
     "Skip" : {
       "localizations" : {
@@ -2190,6 +2265,38 @@
         }
       }
     },
+    "Type Kazakh text…" : {
+      "localizations" : {
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Введите казахский текст…"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Введите казахский текст…"
+          }
+        }
+      }
+    },
+    "Type Latin text…" : {
+      "localizations" : {
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Введите латинский текст…"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Введите латинский текст…"
+          }
+        }
+      }
+    },
     "Unfavorite" : {
       "localizations" : {
         "kk" : {
@@ -2254,53 +2361,8 @@
         }
       }
     },
-    "Кириллица" : {
-      "localizations" : {
-        "kk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Кирилл"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Кириллица"
-          }
-        }
-      }
-    },
-    "Латын" : {
-      "localizations" : {
-        "kk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Латын"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Латын"
-          }
-        }
-      }
-    },
-    "Мәтінді жазыңыз..." : {
-      "localizations" : {
-        "kk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Мәтінді жазыңыз..."
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Введите текст..."
-          }
-        }
-      }
+    "Қазақша" : {
+
     }
   },
   "version" : "1.1"

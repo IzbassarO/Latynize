@@ -26,8 +26,8 @@ struct SettingsView: View {
     @State private var showAlphabetInfo = false
     @State private var showFeedbackMail = false
     @State private var showShareSheet = false
-
-    private let appStoreURL = "https://apps.apple.com/app/id6741234567"  // ← замени на реальный после publish
+    
+    private let appStoreURL = "https://apps.apple.com/kz/app/latynize/id6760948497"
     private let feedbackEmail = "izbassar.eng@gmail.com"
     
     private let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0"

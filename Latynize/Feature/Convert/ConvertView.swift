@@ -153,9 +153,9 @@ struct ConvertView: View {
     private var directionSwitcher: some View {
         HStack(spacing: 0) {
             VStack(spacing: 3) {
-                Text(viewModel.direction == .cyrillicToLatin ? "Кириллица" : "Латын")
-                    .font(.system(size: 16, weight: .semibold))
                 Text(viewModel.direction == .cyrillicToLatin ? "Cyrillic" : "Latin")
+                    .font(.system(size: 16, weight: .semibold))
+                Text(viewModel.direction == .cyrillicToLatin ? "Қазақша" : "Latınşa")
                     .font(.system(size: 11))
                     .foregroundStyle(.secondary)
             }
@@ -178,9 +178,9 @@ struct ConvertView: View {
             }
             
             VStack(spacing: 3) {
-                Text(viewModel.direction == .cyrillicToLatin ? "Латын" : "Кириллица")
-                    .font(.system(size: 16, weight: .semibold))
                 Text(viewModel.direction == .cyrillicToLatin ? "Latin" : "Cyrillic")
+                    .font(.system(size: 16, weight: .semibold))
+                Text(viewModel.direction == .cyrillicToLatin ? "Latınşa" : "Қазақша")
                     .font(.system(size: 11))
                     .foregroundStyle(.secondary)
             }
@@ -218,8 +218,8 @@ struct ConvertView: View {
             ZStack(alignment: .topLeading) {
                 if !viewModel.hasInput {
                     Text(viewModel.direction == .cyrillicToLatin
-                         ? "Мәтінді жазыңыз..."
-                         : "Mätindi jaziñiz...")
+                         ? "Type Kazakh text…"
+                         : "Type Latin text…")
                         .font(.system(size: 16))
                         .foregroundStyle(.quaternary)
                         .padding(.horizontal, 12)
@@ -492,7 +492,7 @@ struct AlphabetReferenceView: View {
                 VStack(spacing: 0) {
                     // Header row
                     HStack {
-                        Text("Кириллица")
+                        Text("Cyrillic")
                             .frame(maxWidth: .infinity, alignment: .leading)
                         Text("2021")
                             .frame(maxWidth: .infinity, alignment: .center)

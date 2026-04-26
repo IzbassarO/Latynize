@@ -84,10 +84,6 @@ struct WhatsNewSheet: View {
                 Text("Latynize")
                     .font(.system(size: 36, weight: .black))
                     .foregroundStyle(.primary)
-                
-                Text("2.0")
-                    .font(.system(size: 36, weight: .black))
-                    .foregroundStyle(Color.accentTeal)
             }
         }
     }

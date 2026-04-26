@@ -48,7 +48,7 @@ struct WordOfTheDayCard: View {
                         Image(systemName: "sparkles")
                             .font(.system(size: 10))
                             .foregroundStyle(Color.accentTeal)
-                        Text("Letter of the day")
+                        Text("Letter of the Day")
                             .font(.system(size: 11, weight: .semibold))
                             .foregroundStyle(.secondary)
                             .textCase(.uppercase)
